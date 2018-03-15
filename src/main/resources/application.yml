@@ -1,0 +1,15 @@
+spring:
+  #数据库相关配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #这里加上后缀用来防止mysql乱码
+    url: jdbc:mysql://127.0.0.1:3306/qcl?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: qcl123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#url相关配置，这里配置url的基本url
+server:
+  context-path: /sell
