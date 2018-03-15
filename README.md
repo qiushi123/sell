@@ -1,7 +1,13 @@
 # sell
 springboot实战入门，springboot+jpa实现java后台api接口
 
-返回数据格式如下
+#实现功能
+- 1 购物车功能
+- 2 java后台api接口
+- 3 简单的电商订单后台
+
+#### 项目中的sql.txt文档中是创建对应表格所需的sql语句
+#返回数据格式如下
 ```
 {
     "code": 100,
@@ -42,61 +48,7 @@ springboot实战入门，springboot+jpa实现java后台api接口
                     "createTime": 1513481642000
                 }
             ]
-        },
-        {
-            "name": "粥品类",
-            "type": 2,
-            "foods": [
-                {
-                    "id": "1",
-                    "name": "小米粥",
-                    "price": 3.2,
-                    "desc": "很好喝",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1513473364000
-                },
-                {
-                    "id": "10",
-                    "name": "奶茶100",
-                    "price": 6,
-                    "desc": "很好喝10",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1520850807000
-                },
-                {
-                    "id": "11",
-                    "name": "11",
-                    "price": 3.2,
-                    "desc": "很好喝12",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1520832219000
-                },
-                {
-                    "id": "12",
-                    "name": "小米粥12",
-                    "price": 3.2,
-                    "desc": "很好喝12",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1520831967000
-                },
-                {
-                    "id": "2",
-                    "name": "小米粥2",
-                    "price": 3.2,
-                    "desc": "很好喝2",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1520942298000
-                },
-                {
-                    "id": "6",
-                    "name": "奶茶100",
-                    "price": 6,
-                    "desc": "很好喝10",
-                    "icon": "http://xxxxx.jpg",
-                    "createTime": 1520850957000
-                }
-            ]
-        }
+        }       
     ]
 }
 ```
