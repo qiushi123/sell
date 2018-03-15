@@ -4,6 +4,7 @@ import lombok.Getter;
 
 /**
  * Created by qcl on 2018/3/13.
+ *
  */
 @Getter
 public enum PayStatusEnum {
