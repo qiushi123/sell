@@ -12,6 +12,7 @@ import lombok.Data;
 
 /**
  * Created by qcl on 2018/3/13.
+ * OrderMaster对应的dto
  */
 @Data
 public class OrderDTO {

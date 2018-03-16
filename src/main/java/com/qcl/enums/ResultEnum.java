@@ -12,7 +12,9 @@ public enum ResultEnum {
     RESULT_NO(-101, "没有这条结果"),
     RESULT_OK(100, "成功"),
     PRODUCT_NOT_EXIST(10, "商品不存在"),
-    PRODUCT_ERROR_0(11, "商品库存已经为零"),;
+    PRODUCT_ERROR_0(11, "商品库存已经为零"),
+    ORDER_NOT_EXIST(20, "订单不存在"),
+    ORDER_DETAIL_NOT_EXIST(21, "订单详情不存在"),;
 
     private Integer code;
     private String msg;
