@@ -21,6 +21,7 @@ public enum ResultEnum {
     ORDER_UPDATE_FAIL(23, "订单状态更新失败"),
     ORDER_DETAIL_EMPTY(24, "订单里商品为空"),
     ORDER_PAY_STATUS_ERROR(25, "订单支付状态不正确"),
+    ORDER_OPENID_ERROR(26,"查询的订单和用户不匹配"),
     //购物车相关
     CART_EMPTY(31, "购物车不能为空"),;
 

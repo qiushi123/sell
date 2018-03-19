@@ -19,3 +19,12 @@ spring:
 #url相关配置，这里配置url的基本url
 server:
   context-path: /sell
+
+#配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
+#logging:
+#  pattern:
+#    console: "%d - %msg%n" #设置控制台日子输出格式
+#  path: /var/log/tomcat
+#  level:
+#    com.qcl.LoggerTest: debug #设置com.qcl.LoggerTest的日志输出级别
+

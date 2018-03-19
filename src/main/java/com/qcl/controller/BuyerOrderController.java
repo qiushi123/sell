@@ -6,6 +6,7 @@ import com.qcl.dto.OrderDTO;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
 import com.qcl.form.OrderForm;
+import com.qcl.service.BuyerService;
 import com.qcl.service.OrderService;
 import com.qcl.utils.ResultApiUtil;
 
@@ -37,6 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 public class BuyerOrderController {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    BuyerService buyerService;
 
     //创建单个订单
     @PostMapping("/create")
@@ -96,8 +100,7 @@ public class BuyerOrderController {
             @RequestParam("openid") String openid,
             @RequestParam("orderId") String orderId
     ) {
-        // TODO: 2018/3/18 不安全的做法，
-        OrderDTO result = orderService.findOne(orderId);
+        OrderDTO result = buyerService.findOrderOne(openid, orderId);
         return ResultApiUtil.success(result);
 
     }
@@ -107,9 +110,7 @@ public class BuyerOrderController {
     public ResultApi cancel(
             @RequestParam("openid") String openid,
             @RequestParam("orderId") String orderId) {
-        OrderDTO orderDTO = orderService.findOne(orderId);
-        // TODO: 2018/3/18 不安全
-        orderService.cancel(orderDTO);
+        OrderDTO orderDTO = buyerService.cancelOrder(openid, orderId);
         return ResultApiUtil.success(null);
 
     }

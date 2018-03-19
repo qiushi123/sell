@@ -20,6 +20,9 @@ public class LoggerTest {
         log.error("我是error");
         log.info("我是info");
         log.debug("我是debug");
+
+        String name = "我是变量";
+        log.error("输出变量 name={}", name);
     }
 }
 
