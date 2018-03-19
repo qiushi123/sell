@@ -20,7 +20,7 @@ public class ProductInfo {
 
     private String productName;
     private BigDecimal productPrice;
-    //    库存
+    //    库存数量
     private Integer productStock;
     private String productDescription;
     private String productIcon;

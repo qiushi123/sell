@@ -2,6 +2,8 @@ package com.qcl.service.impl;
 
 import com.qcl.dataobject.OrderDetail;
 import com.qcl.dto.OrderDTO;
+import com.qcl.enums.OrderStatusEnum;
+import com.qcl.enums.PayStatusEnum;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class OrderServiceImplTest {
     OrderServiceImpl orderService;
 
     private final String BUYER_OPENID = "110110110";
-    private final String ORDER_ID = "1521111048292538403";
+    private final String ORDER_ID = "1521111021589305409";
 
     @Test
     public void create() throws Exception {
@@ -74,14 +76,24 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancel() throws Exception {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.cancel(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.CANCEL.getCode(), result.getOrderStatus());
+
     }
 
     @Test
     public void finish() throws Exception {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.finish(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.FINISHED.getCode(), result.getOrderStatus());
     }
 
     @Test
     public void paid() throws Exception {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO paid = orderService.paid(orderDTO);
+        Assert.assertEquals(PayStatusEnum.SUCESS.getCode(),paid.getPayStatus());
     }
 
 }

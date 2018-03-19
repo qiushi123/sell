@@ -22,7 +22,7 @@ public class ProductCategoryRepositoryTest {
     public void findByCategoryTypeIn() throws Exception {
         List<Integer> list = Arrays.asList(2, 3, 4);
         List<ProductCategory> result = productCategoryRepository.findByCategoryTypeIn(list);
-        Assert.assertEquals(0, result.size());
+        Assert.assertNotEquals(0, result.size());
     }
 
     @Autowired
@@ -30,7 +30,7 @@ public class ProductCategoryRepositoryTest {
 
     @Test
     public void test() {
-        ProductCategory productCategory = new ProductCategory("女士最爱", 5);
+        ProductCategory productCategory = new ProductCategory("女士最爱", 25);
         //        productCategory.setCategoryId(1);
         //        productCategory.setCategoryName("热销1");
         //        productCategory.setCategoryType(2);
@@ -41,7 +41,7 @@ public class ProductCategoryRepositoryTest {
     @Test
     public void findAll() {
         ProductCategory one = productCategoryRepository.findOne(1);
-        System.out.println(one.toString());
+        Assert.assertNotNull(one);
     }
 
     @Test

@@ -9,6 +9,11 @@ import com.qcl.enums.ResultEnum;
  */
 public class ResultApiUtil {
 
+    public static ResultApi success(Object object) {
+        ResultApi success = success(ResultEnum.RESULT_OK, object);
+        return success;
+    }
+
     public static ResultApi success(ResultEnum resultEnum, Object object) {
         ResultApi resultApi = new ResultApi();
         resultApi.setCode(resultEnum.getCode());

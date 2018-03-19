@@ -10,6 +10,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  #返回的api接口的配置，全局有效
+  jackson:
+    default-property-inclusion: non_null #如果某一个字段为null，就不再返回这个字段
+
+
 #url相关配置，这里配置url的基本url
 server:
   context-path: /sell
