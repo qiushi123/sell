@@ -1,7 +1,7 @@
 # sell
 springboot实战入门，springboot+jpa实现java后台api接口
 
-#实现功能
+# 实现功能
 - 1 购物车功能
 - 2 java后台api接口
 - 3 简单的电商订单后台
@@ -12,11 +12,11 @@ springboot实战入门，springboot+jpa实现java后台api接口
 
 #### 项目中的sql.txt文档中是创建对应表格所需的sql语句
 
-##api接口说明文档
-####一，获取pv访问量
-url如下，采用get请求
-https://30paotui.com/pv/2048/list 
-返回的json数据如下
+## api接口说明文档
+#### 一，获取pv访问量
+- url：https://30paotui.com/pv/2048/list 
+- 请求方式：get
+- 返回的json数据如下
  ```
  {
     "code": 100,
@@ -24,7 +24,10 @@ https://30paotui.com/pv/2048/list
     "data": 342
 }
 ```
-#返回数据格式如下
+# 获取热销外卖产品
+- url：https://30paotui.com/buyer/product/list
+- 请求方式：get
+- 返回数据格式如下
 ```
 {
     "code": 100,
