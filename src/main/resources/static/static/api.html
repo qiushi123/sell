@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js+springboot解决跨域请求</title>
+</head>
+<body>
+<script>
+
+    console.log(window.location.pathname)
+
+</script>
+
+
+
+
+<!--获取当前ip和城市-->
+<!--<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>-->
+
+<!--<script src="/static/static/js/jquery.min.js">-->
+<!--</script>-->
+<!--<script>-->
+<!--var baseUrl = "";-->
+<!--var ipstr = "" + returnCitySN['cip'] + returnCitySN['cname']-->
+<!--if (window.location.hostname == "localhost") {-->
+<!--baseUrl = "https://localhost:8443";-->
+<!--} else {-->
+<!--baseUrl = "https://30paotui.com";-->
+<!--}-->
+<!--$(document).ready(function () {-->
+<!--$.ajax({-->
+<!--url: baseUrl + "/pv/2048/add",-->
+<!--type: "post",-->
+<!--data: {"ip": ipstr},-->
+<!--success: function (result) {-->
+<!--console.log("数据提交成功");-->
+<!--}-->
+<!--});-->
+
+<!--$.ajax({-->
+<!--url: baseUrl + "/pv/2048/list",-->
+<!--success: function (result) {-->
+<!--document.getElementById("count").innerHTML = result.data;-->
+<!--}-->
+<!--});-->
+<!--});-->
+<!--//    console.log(ipstr)-->
+<!--//    alert(returnCitySN['cip'] + returnCitySN['cname']);-->
+
+<!--</script>-->
+浏览量：<span style="color: rebeccapurple;font-size: 18pt" id="count"></span>
+<!--浏览器统计-->
+<!--获取当前ip和城市-->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<!--ajax-->
+<script src="../static/js/jquery.min.js">
+</script>
+<!--浏览量-->
+<script src="../static/js/pv.js"></script>
+</body>
+</html>

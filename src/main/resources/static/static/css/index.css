@@ -1,0 +1,25 @@
+/*2048相关*/
+.div2048 {
+    display: flex; /*Flex布局*/
+    display: -webkit-flex; /* Safari */
+    align-items: center; /*指定垂直居中*/
+    margin-left: 50pt;
+    margin-top: 50pt;
+
+}
+
+.img {
+    height: 50pt;
+    width: 50pt;
+}
+
+.a2048 {
+    vertical-align: middle;
+    font-size: 38pt;
+    margin-left: 15pt;
+}
+
+.divPV {
+    bottom: 0;
+    position: absolute;
+}

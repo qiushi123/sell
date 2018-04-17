@@ -1,0 +1,41 @@
+project:
+  name: 正式环境
+  baseUrl:  http://30paotui.com
+  http-port: 80
+  https-port: 443
+spring:
+  #数据库相关配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #这里加上后缀用来防止mysql乱码
+    url: jdbc:mysql://47.97.192.116:3306/sell?characterEncoding=utf-8&useSSL=false
+    username: qcl
+    password: QiuShi123!
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  #返回的api接口的配置，全局有效
+  jackson:
+    default-property-inclusion: non_null #如果某一个字段为null，就不再返回这个字段
+
+
+#url相关配置，这里配置url的基本url
+server:
+#  context-path: /sell
+#这里设置https端口为443可能不起效果，需要在sellapplication中设置
+  port: 443
+  ssl:
+      key-store: 214590826650132.pfx
+      key-store-password: 214590826650132
+
+
+#配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
+#logging:
+#  pattern:
+#    console: "%d - %msg%n" #设置控制台日子输出格式
+#  path: /var/log/tomcat
+#  level:
+#    com.qcl.LoggerTest: debug #设置com.qcl.LoggerTest的日志输出级别
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+500错误，<span style="color: red;font-size: 5em" id="sp">3</span>秒后自动跳到首页
+<!--引入倒计时-->
+<script>
+    var x = 3; //利用了全局变量来执行
+    var baseUrl;
+    if (window.location.hostname == "localhost") {
+        baseUrl = "http://localhost:8080";
+    } else {
+        baseUrl = "https://30paotui.com";
+    }
+
+    window.onload = function () {
+        setInterval(goHome, 1000);//定时调用倒计时
+    };
+    var goHome = function goHome() {
+        x--;
+        if (x > 0) {
+            document.getElementById("sp").innerHTML = x;  //每次设置的x的值都不一样了。
+        } else {
+            location.href = baseUrl;
+        }
+    };
+
+    console.log("qqqq1" + window.location.hostname);
+    console.log("qqqq" + baseUrl);
+
+</script>
+</body>
+</html>

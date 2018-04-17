@@ -1,30 +1,4 @@
 spring:
-  #数据库相关配置
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    #这里加上后缀用来防止mysql乱码
-    url: jdbc:mysql://127.0.0.1:3306/qcl?characterEncoding=utf-8&useSSL=false
-    username: root
-    password: qcl123
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
-  #返回的api接口的配置，全局有效
-  jackson:
-    default-property-inclusion: non_null #如果某一个字段为null，就不再返回这个字段
-
-
-#url相关配置，这里配置url的基本url
-server:
-  context-path: /sell
-
-#配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
-#logging:
-#  pattern:
-#    console: "%d - %msg%n" #设置控制台日子输出格式
-#  path: /var/log/tomcat
-#  level:
-#    com.qcl.LoggerTest: debug #设置com.qcl.LoggerTest的日志输出级别
-
+  profiles:
+    #上线前必看，prod 正式，test 测试
+    active: prod

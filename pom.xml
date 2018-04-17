@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.qcl</groupId>
-    <artifactId>sell</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>spring-boot-docker</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>sell</name>
@@ -68,14 +68,19 @@
         </dependency>
     </dependencies>
 
+    <!-- jar -->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <!-- 打包的时候不指定单元测试 -->
+                    <skipTests>true</skipTests>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 </project>

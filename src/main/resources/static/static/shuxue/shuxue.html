@@ -1,0 +1,149 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--https兼容http-->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+    <!--适配手机-->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>60秒趣味数学比拼小游戏</title>
+
+    <style type="text/css">
+        body {
+            font-family: Dunkin, "开心软件甜蜜蜜简体", "Segoe", "Segoe UI", "微软雅黑", sans-serif;
+            font-size: 20pt;
+            background-color: #fff
+        }
+
+        input, button {
+            font-family: Dunkin, "开心软件甜蜜蜜简体", "Segoe", "Segoe UI", "微软雅黑", sans-serif;
+            font-size: 20px;
+            background: #faff66;
+        }
+
+        .sure {
+            width: 160pt;
+            height: 80pt;
+            background: #ff8c84;
+        }
+
+        .more {
+            margin-top: 40pt;
+            font-size: 15pt;
+        }
+
+        .titleq {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #fff;
+            z-index: 3;
+        }
+
+        #ti {
+            font-family: Dunkin, "Segoe", "Segoe UI", sans-serif;
+            font-size: 50px;
+            background-color: #fff
+        }
+
+        #att3 {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="titleq" id="titleq">
+    <br><br>
+    <h3 align="center">趣味数学小游戏</h3>
+    <center>
+        <input class="sure" type="button" value="开始比拼答题吧！" onclick="dati()">
+    </center>
+    <!--<input type="button" value="答题吧！" onclick="$('title').style.display='none';dati()">-->
+</div>
+
+<center>
+    <h4 id="ti">17+12</h4>
+    <input type="text" id="texts">
+    <br>
+    <input class="sure" type="button" value="确定" onclick="ok()">
+    <br><br>
+    答对<span id="att1">0</span>题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    打错<span id="att2">0</span>题<br><span id="att3">60</span>秒
+</center>
+
+<script type="text/javascript">
+    //    function $(i) {
+    //        return document.getElementById(i)
+    //    }
+    function rand(min, max) {
+        return Math.round(Math.random() * (max - min) + min)
+    }
+    var dui = 0, cuo = 0, time = 60, fu1 = 0, fu2 = 0, add = 0, pd = 29;
+    function dati() {
+        document.getElementById("titleq").style.display = 'none';
+        dui = 0;
+        cuo = 0;
+        time = 60
+        document.getElementById("att1").innerHTML = "0"
+        document.getElementById("att2").innerHTML = "0"
+        document.getElementById("att3").innerHTML = "60"
+//        $("att2").innerHTML = "0"
+//        $("att3").innerHTML = "60"
+        var art = setInterval(function () {
+            time--;
+            document.getElementById("att3").innerHTML = time;
+            console.log(time);
+            if (time <= 0) {
+                alert("时间到，你答对了" + this.cuo + "道题，分享给好友～～比拼下吧");
+                document.getElementById('titleq').style.display = '';
+                clearInterval(art)
+            }
+        }, 1000)
+        tis()
+    }
+    function tis() {
+        fu1 = rand(5, 100);
+        fu2 = rand(5, 100);
+        add = rand(0, 1)
+        if (fu2 > fu1) {
+            add = 0
+        }
+        if (add == 0) {
+            pd = fu1 + fu2
+        }
+        if (add == 1) {
+            pd = fu1 - fu2
+        }
+        document.getElementById("ti").innerHTML = fu1 + "" + ["+", "-"][add] + "" + fu2
+    }
+    function ok() {
+        if (document.getElementById("texts").value == pd) {
+            dui++;
+            document.getElementById("att1").innerHTML = dui
+        } else {
+            cuo++;
+            document.getElementById("att2").innerHTML = cuo
+        }
+        tis()
+    }
+</script>
+
+
+<div class="more" style="text-align:center;">
+    更多小游戏：<a href="https://www.30paotui.com" target="_blank">小游戏之家</a>
+</div>
+<!--浏览器统计-->
+<!--获取当前ip和城市-->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<!--ajax-->
+<script src="../js/jquery.min.js">
+</script>
+<!--浏览量-->
+<script src="../js/pv.js"></script>
+</body>
+</html>
