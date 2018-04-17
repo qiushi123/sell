@@ -1,6 +1,6 @@
 echo mvn start
-source /shell/mvn.sh
+source mvn.sh
 echo move jar
-source /shell/mv.sh
+source mv.sh
 echo restart linux
 #source reboot.sh

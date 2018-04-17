@@ -1,4 +1,4 @@
 echo stop application
-source /shell/stop.sh
+source stop.sh
 echo start application
-source /shell/start.sh
+source start.sh
