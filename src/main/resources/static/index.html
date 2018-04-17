@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--http兼容https-->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+
+    <title>微信小程序学习</title>
+    <!-- 这里是通过@import引用CSS的样式内容 -->
+    <style type="text/css">
+        @import url(static/css/index.css);
+    </style>
+    <!--获取当前ip和城市-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--ajax-->
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
+    </script>
+
+</head>
+<body>
+<div class="div2048">
+    <img class="img" src="static/images/2048.png">
+    <a class="a2048" href="static/2048/2048.html">2048小游戏</a>
+</div>
+<div class="div2048">
+    <img class="img" src="static/images/shenjingmao.png">
+    <a class="a2048" href="static/shenjingmao/shenjingmao.html">围住神经猫小游戏</a>
+</div>
+<div class="div2048">
+    <img class="img" src="static/images/xiaoniao.png">
+    <a class="a2048" href="static/xiaoniao/xiaoniao.html">像素小鸟小游戏</a>
+</div>
+<div class="div2048">
+    <img class="img" src="static/images/shuxue.png">
+    <a class="a2048" href="static/shuxue/shuxue.html">60秒趣味数学大比拼</a>
+</div>
+
+
+<div class="divPV">
+    浏览量：<span style="color: rebeccapurple;font-size: 18pt" id="count"></span>
+</div>
+
+
+<script>
+    var baseUrl = "";
+    var ipstr = "" + returnCitySN['cip'] + returnCitySN['cname'];
+    var pathname = window.location.pathname;
+    if (window.location.hostname == "localhost") {
+        baseUrl = "https://localhost:8443";
+    } else {
+        baseUrl = "https://30paotui.com";
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: baseUrl + "/pv/2048/add",
+            type: "post",
+            data: {"ip": ipstr,"path":pathname},
+            success: function (result) {
+                console.log("数据提交成功");
+            }
+        });
+
+        $.ajax({
+            url: baseUrl + "/pv/2048/list",
+            success: function (result) {
+                document.getElementById("count").innerHTML = result.data;
+            }
+        });
+    });
+    //    console.log(ipstr)
+    //    alert(returnCitySN['cip'] + returnCitySN['cname']);
+
+</script>
+
+</body>
+</html>
