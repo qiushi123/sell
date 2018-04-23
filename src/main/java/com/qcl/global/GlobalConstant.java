@@ -5,7 +5,7 @@ package com.qcl.global;
  * Created by qcl on 2018/4/13.
  * 一些全局的参数
  *
- * 444444
+ * 55555
  */
 public class GlobalConstant {
 
