@@ -38,6 +38,7 @@
 
 <div class="divPV">
     浏览量：<span style="color: rebeccapurple;font-size: 18pt" id="count"></span>
+    <a href="http://47.97.192.116:9999/pvlist">查看访问ip</a>
 </div>
 
 
@@ -54,7 +55,7 @@
         $.ajax({
             url: baseUrl + "/pv/2048/add",
             type: "post",
-            data: {"ip": ipstr,"path":pathname},
+            data: {"ip": ipstr, "path": pathname},
             success: function (result) {
                 console.log("数据提交成功");
             }
