@@ -47,7 +47,7 @@
     <a class="a2048" href="static/shuxue/shuxue.html">60秒趣味数学大比拼</a>
 </div>
 
-
+<!--请求数据-->
 <script>
     var baseUrl = "";
     var ipstr = "" + returnCitySN['cip'] + returnCitySN['cname'];
@@ -55,7 +55,7 @@
     if (window.location.hostname == "localhost") {
         baseUrl = "http://localhost:8080";
     } else {
-        baseUrl = "https://30paotui.com";
+        baseUrl = "http://30paotui.com";
     }
     $(document).ready(function () {
         $.ajax({
