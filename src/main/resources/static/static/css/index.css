@@ -1,10 +1,23 @@
 /*2048相关*/
+h1 {
+    margin-left: 30pt;
+    margin-top: 25pt;
+
+}
+
+li {
+    margin-left: 50pt;
+    margin-top: 15pt;
+    margin-bottom: 15pt;
+    font-size: 25pt;
+}
+
 .div2048 {
     display: flex; /*Flex布局*/
     display: -webkit-flex; /* Safari */
     align-items: center; /*指定垂直居中*/
     margin-left: 50pt;
-    margin-top: 50pt;
+    margin-top: 10pt;
 
 }
 
@@ -19,7 +32,8 @@
     margin-left: 15pt;
 }
 
-.divPV {
-    bottom: 0;
-    position: absolute;
-}
+/*.divPV {*/
+/*bottom: 0;*/
+/*position: absolute;*/
+/*}*/
+

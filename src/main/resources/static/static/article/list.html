@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>30天零基础实战入门小程序</title>
+    <!--ajax-->
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <style type="text/css">
+        li {
+            vertical-align: middle;
+            padding: 0;
+            margin: 30pt;
+            font-size: 24pt;
+            width: 85%;
+        }
+    </style>
+</head>
+<body>
+<ul id="ml">
+</ul>
+
+
+<script>
+    var baseUrl = "";
+    if (window.location.hostname == "localhost") {
+        baseUrl = "http://localhost:8080";
+    } else {
+        baseUrl = "https://30paotui.com";
+    }
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: baseUrl + "/article/list",
+            success: function (result) {
+                console.log(result);
+                var lists = result.data;
+                for (var i = 0; i < lists.length; i++) {
+                    console.log(lists[i].aid);
+                    var aidurl = url + lists[i].aid;
+                    console.log(aidurl);
+                    var $ul = document.getElementById("ml");
+                    //添加 li
+                    var li = document.createElement("li");
+                    var a = document.createElement("a");
+
+                    //设置 li 属性，如 id
+                    li.setAttribute("id", "newli");
+                    a.innerHTML = lists[i].title;
+                    a.href = aidurl;
+                    li.appendChild(a);
+                    $ul.appendChild(li);
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

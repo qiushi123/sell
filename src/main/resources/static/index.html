@@ -5,9 +5,12 @@
     <!--百度收录验证-->
     <meta name="baidu-site-verification" content="Bv52S9d8YS"/>
     <!--http兼容https-->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>-->
 
     <title>微信小程序小游戏学习</title>
+    <meta name="keywords" content="零基础入门微信小程序"/>
+    <meta name="description" content="零基础入门微信小程序"/>
+
     <!-- 这里是通过@import引用CSS的样式内容 -->
     <style type="text/css">
         @import url(static/css/index.css);
@@ -20,6 +23,13 @@
 
 </head>
 <body>
+<h1>30天零基础实战入门小程序系列</h1>
+<!--小程序自学文章列表-->
+<div class="listArticle" id="muban">
+    <ul id="ml"></ul>
+</div>
+<br><br>
+<h1>小游戏，轻松一下</h1>
 <div class="div2048">
     <img class="img" src="static/images/2048.png">
     <a class="a2048" href="static/2048/2048.html">2048小游戏</a>
@@ -38,18 +48,12 @@
 </div>
 
 
-<div class="divPV">
-    浏览量：<span style="color: rebeccapurple;font-size: 18pt" id="count"></span>
-    <a href="http://47.97.192.116:9999/pvlist">查看访问ip</a>
-</div>
-
-
 <script>
     var baseUrl = "";
     var ipstr = "" + returnCitySN['cip'] + returnCitySN['cname'];
     var pathname = window.location.pathname;
     if (window.location.hostname == "localhost") {
-        baseUrl = "https://localhost:8443";
+        baseUrl = "http://localhost:8080";
     } else {
         baseUrl = "https://30paotui.com";
     }
@@ -63,10 +67,29 @@
             }
         });
 
+        //加载文章列表
+        url = baseUrl + "/static/article/article.html?aid=";
         $.ajax({
-            url: baseUrl + "/pv/2048/list",
+            url: baseUrl + "/article/list",
             success: function (result) {
-                document.getElementById("count").innerHTML = result.data;
+                console.log(result);
+                var lists = result.data;
+                for (var i = 0; i < lists.length; i++) {
+                    console.log(lists[i].aid);
+                    var aidurl = url + lists[i].aid;
+                    console.log(aidurl);
+                    var $ul = document.getElementById("ml");
+                    //添加 li
+                    var li = document.createElement("li");
+                    var a = document.createElement("a");
+
+                    //设置 li 属性，如 id
+                    li.setAttribute("id", "newli");
+                    a.innerHTML = lists[i].title;
+                    a.href = aidurl;
+                    li.appendChild(a);
+                    $ul.appendChild(li);
+                }
             }
         });
     });
