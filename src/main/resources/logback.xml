@@ -2,7 +2,7 @@
 <configuration debug="true">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
     <!--<property name="LOG_HOME" value="../sell/src/test"/>-->
-    <property name="LOG_HOME" value="../sell"/>
+    <property name="LOG_HOME" value="../home/logs"/>
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -15,7 +15,7 @@
         <!--配置滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/TestWeb.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/sell.log.%d{yyyy-MM-dd}.log</FileNamePattern>
             <!--日志文件保留天数-->
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
