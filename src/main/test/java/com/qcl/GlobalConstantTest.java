@@ -1,7 +1,5 @@
 package com.qcl;
 
-import com.qcl.global.GlobalConstant;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

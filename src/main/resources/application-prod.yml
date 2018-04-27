@@ -1,8 +1,6 @@
 project:
   name: 正式环境
-  baseUrl:  http://30paotui.com
-  http-port: 80
-  https-port: 443
+
 spring:
   #数据库相关配置
   datasource:
@@ -23,13 +21,7 @@ spring:
 
 #url相关配置，这里配置url的基本url
 server:
-#  context-path: /sell
-#这里设置https端口为443可能不起效果，需要在sellapplication中设置
-  port: 443
-  ssl:
-      key-store: 214590826650132.pfx
-      key-store-password: 214590826650132
-
+  port: 80
 
 #配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
 #logging:

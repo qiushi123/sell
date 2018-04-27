@@ -1,5 +1,6 @@
 package com.qcl.service.impl;
 
+
 import com.qcl.dataobject.ProductInfo;
 import com.qcl.dto.CartDTO;
 import com.qcl.enums.ProductStatusEnum;
@@ -26,7 +27,7 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Override
     public ProductInfo findOne(String productId) {
-        return repository.findOne(productId);
+        return repository.findById(productId).get();
     }
 
     /*
@@ -58,7 +59,8 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Transactional
     public void addcreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            //            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            ProductInfo productInfo = repository.findById(cartDTO.getProductId()).get();
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
@@ -73,7 +75,8 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Transactional
     public void deletecreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO : cartDTOList) {
-            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            //            ProductInfo productInfo = repository.findOne(cartDTO.getProductId());
+            ProductInfo productInfo = repository.findById(cartDTO.getProductId()).get();
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }

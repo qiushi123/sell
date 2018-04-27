@@ -1,8 +1,5 @@
 project:
   name: 开发测试环境
-  baseUrl:  http://localhost
-  http-port: 8080
-  https-port: 8443
 
 spring:
   #数据库相关配置
@@ -23,17 +20,5 @@ spring:
 
 #url相关配置，这里配置url的基本url
 server:
-#  context-path: /sell
-  port: ${project.https-port}
-  ssl:
-    key-store: 214590826650132.pfx
-    key-store-password: 214590826650132
-
-#配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
-#logging:
-#  pattern:
-#    console: "%d - %msg%n" #设置控制台日子输出格式
-#  path: /var/log/tomcat
-#  level:
-#    com.qcl.LoggerTest: debug #设置com.qcl.LoggerTest的日志输出级别
+  port: 8080
 

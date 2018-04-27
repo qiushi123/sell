@@ -1,5 +1,6 @@
 package com.qcl.repository;
 
+
 import com.qcl.dataobject.ProductInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
