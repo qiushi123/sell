@@ -5,58 +5,204 @@
     <!--自适应-->
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <!--网站icon-->
-    <link rel="icon" href="../images/2048.png" type="image/x-icon"/>
-
     <!--百度收录验证-->
-    <meta baidu-gxt-verify-token="ca3b27bf3d544ef66fdc4b6bd6079bf0">
     <meta name="baidu-site-verification" content="Bv52S9d8YS"/>
-
     <!--http兼容https-->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
-
+    <!-- 直接把你的选定的图片的地址放进来就行了，但是图片的格式转换成.ico -->
+    <!-- <link rel="icon" href="" type="image/x-icon"> -->
     <title>微信小程序小游戏学习</title>
     <meta name="keywords" content="零基础入门微信小程序"/>
     <meta name="description" content="零基础入门微信小程序"/>
+    <!-- 下面的引入的是你更改后的css文件，不用@import的方式 -->
+    <!-- <link rel="stylesheet" href="static/css/index.css"> -->
+    <style>
+        /*首先进行的操作应该是跨浏览器的表现一致 */
+        body, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, fieldset, legend, input, textarea, select {
+            margin: 0;
+            padding: 0
+        }
 
-    <!-- 这里是通过@import引用CSS的样式内容 -->
-    <style type="text/css">
-        @import url(static/css/index.css);
+        body {
+            font: 12px "宋体", "Arial Narrow", HELVETICA;
+            background: #fff;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        a {
+            color: #2d374b;
+            text-decoration: none
+        }
+
+        a:hover {
+            color: #cd0200;
+            text-decoration: underline
+        }
+
+        em {
+            font-style: normal
+        }
+
+        li {
+            list-style: none
+        }
+
+        img {
+            border: 0;
+            height: 6rem;
+            vertical-align: middle
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+
+        p {
+            word-wrap: break-word
+        }
+
+        /*下面的才是项目中的样式的代码*/
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 3rem;
+        }
+
+        .smallRutine h1 {
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .smallRutine ul li {
+            margin-top: 1.5rem;
+        }
+
+        .game {
+            margin-top: 3rem;
+        }
+
+        .game h1 {
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .game .gameList {
+            display: flex;
+            margin-top: 2rem;
+        }
+
+        .gameList div {
+            width: 25%;
+            padding: 0.5rem;
+        }
+
+        .gameList div a {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gameList div a span {
+            font-size: 1.2rem;
+            display: block;
+            width: 100%;
+            text-align: center;
+            height: 2rem;
+            line-height: 2rem;
+        }
+
+        .gameList div a span:hover {
+            color: red;
+        }
+
+        .gameList div a img {
+            flex-grow: 1;
+            border: 1px solid #000;
+        }
     </style>
-    <!--获取当前ip和城市-->
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-    <!--ajax-->
-    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
-    </script>
+
 
 </head>
 <body>
-<h1>30天零基础实战入门小程序系列</h1>
-<!--小程序自学文章列表-->
-<div class="listArticle" id="muban">
-    <ul id="ml"></ul>
-</div>
-<br><br>
-<h1>小游戏，轻松一下</h1>
-<div class="div2048">
-    <img class="img" src="static/images/2048.png">
-    <a class="a2048" href="static/2048/2048.html">2048小游戏</a>
-</div>
-<div class="div2048">
-    <img class="img" src="static/images/shenjingmao.png">
-    <a class="a2048" href="static/shenjingmao/shenjingmao.html">围住神经猫小游戏</a>
-</div>
-<div class="div2048">
-    <img class="img" src="static/images/xiaoniao.png">
-    <a class="a2048" href="static/xiaoniao/xiaoniao.html">像素小鸟小游戏</a>
-</div>
-<div class="div2048">
-    <img class="img" src="static/images/shuxue.png">
-    <a class="a2048" href="static/shuxue/shuxue.html">60秒趣味数学大比拼</a>
-</div>
+<div id="app">
+    <div class="smallRutine">
+        <h1>30天零基础实战入门小程序系列</h1>
+        <!--小程序自学文章列表-->
+        <div class="listArticle" id="muban">
+            <ul id="ml"></ul>
+        </div>
+    </div>
+    <div class="game">
+        <h1>小游戏，轻松一下</h1>
+        <div class="gameList">
+            <div class="div2048">
 
+                <a class="a2048" href="static/2048/2048.html">
+                    <span>2048小游戏</span>
+                    <img class="img" src="static/images/2048.png">
+                </a>
+            </div>
+            <div class="div2048">
+
+                <a class="a2048" href="static/shenjingmao/shenjingmao.html">
+                    <span>围住神经猫小游戏</span>
+                    <img class="img" src="static/images/shenjingmao.png">
+                </a>
+            </div>
+            <div class="div2048">
+
+                <a class="a2048" href="static/xiaoniao/xiaoniao.html">
+                    <span>像素小鸟小游戏</span>
+                    <img class="img" src="static/images/xiaoniao.png">
+                </a>
+            </div>
+            <div class="div2048">
+
+                <a class="a2048" href="static/shuxue/shuxue.html">
+                    <span>60秒趣味数学大比拼</span>
+                    <img class="img" src="static/images/shuxue.png">
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--获取当前ip和城市-->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<!--ajax-->
+<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
 <!--请求数据-->
 <script>
+    // 这个函数的作用是进行rem调整，现在默认的是1rem = 10px
+    var fun = function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+
+                //这里是假设在640px宽度设计稿的情况下，1rem = 10px；
+                //可以根据实际需要修改
+                docEl.style.fontSize = 10 * (clientWidth / 640) + 'px';
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    }
+    fun(document, window);
+
+
     var baseUrl = "";
     var ipstr = "" + returnCitySN['cip'] + returnCitySN['cname'];
     var pathname = window.location.pathname;
@@ -79,29 +225,20 @@
         $.ajax({
             url: baseUrl + "/article/list",
             success: function (result) {
-                console.log(result);
-                var lists = result.data;
-                for (var i = 0; i < lists.length; i++) {
-                    console.log(lists[i].aid);
-                    var aidurl = url + lists[i].aid;
-                    console.log(aidurl);
-                    var $ul = document.getElementById("ml");
-                    //添加 li
-                    var li = document.createElement("li");
-                    var a = document.createElement("a");
 
-                    //设置 li 属性，如 id
-                    li.setAttribute("id", "newli");
-                    a.innerHTML = lists[i].title;
-                    a.href = aidurl;
-                    li.appendChild(a);
-                    $ul.appendChild(li);
-                }
+                var lists = result.data;
+                var htm = '';
+                lists.forEach(function (item, index) {
+                    htm += `
+                            <li class="newli">
+                                <a href="${url}+${item.aid}" >${index + 1} .${item.title}</a>
+                            </li>`
+                });
+                var $ul = $("#ml");
+                $ul.html(htm)
             }
         });
     });
-    //    console.log(ipstr)
-    //    alert(returnCitySN['cip'] + returnCitySN['cname']);
 
 </script>
 
