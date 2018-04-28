@@ -44,7 +44,6 @@ public class Pv2048Controller {
         Pv2048 info = new Pv2048();
         info.setPvIp(ip);
         info.setPathname(path);
-
         return service.save(info);
     }
 
