@@ -30,7 +30,8 @@
     <script src="editor.md-master/lib/jquery.flowchart.min.js"></script>
     <script src="editor.md-master/editormd.js"></script>
 
-    <!-- 这里是通过@import引用CSS的样式内容 -->
+    <!--头部样式-->
+    <link rel="stylesheet" href="../css/header.css">
     <style type="text/css">
         #testEditorMdview {
             vertical-align: middle;
@@ -59,7 +60,15 @@
 
 </head>
 <body>
-<a href="http://30paotui.com">30天零基础实战入门微信小程序系列</a>
+<!-- header -->
+<div class="header">
+    <div class="nav">
+        <ul>
+            <li id="index"><a href="http://30paotui.com">首页 </a></li>
+            <li id="hierarchy"><a href="http://30paotui.com">零基础入门小程序</a></li>
+        </ul>
+    </div>
+</div>
 <h1 id="title"></h1>
 <div class="time"><span id="createTime">创建时间：</span> <span id="readNum">浏览量1000</span></div>
 <!--展示文章详情页-->

@@ -22,8 +22,9 @@ public class Article {
     private Long aid;
 
     private String title;
-    private String descStr;
     private String content;
     private String readNum;//浏览量
     private String createTime;//创建时间
+    private String author;//作者
+    private String classify;//分类
 }
