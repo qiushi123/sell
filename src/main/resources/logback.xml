@@ -2,6 +2,7 @@
 <configuration debug="true">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
     <!-- 多环境设置 （这里测试和线上日志地址不同）-->
+
     <springProfile name="prod">
         <property name="LOG_HOME" value="../home/logs/sell-log"/>
     </springProfile>
