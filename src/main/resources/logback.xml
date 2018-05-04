@@ -4,7 +4,7 @@
     <!-- 多环境设置 （这里测试和线上日志地址不同）-->
 
     <springProfile name="prod">
-        <property name="LOG_HOME" value="../home/logs/sell-log"/>
+        <property name="LOG_HOME" value="//home/logs/sell-log"/>
     </springProfile>
     <springProfile name="test">
         <property name="LOG_HOME" value="../sell/logs"/>
