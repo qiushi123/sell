@@ -24,3 +24,4 @@ nbdist/
 sell/
 src/test
 target/
+logs/

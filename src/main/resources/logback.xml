@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <!-- 多环境设置 （这里测试和线上日志地址不同）-->
+    <springProfile name="prod">
+        <property name="LOG_HOME" value="/home/logs"/>
+    </springProfile>
+    <springProfile name="test">
+        <property name="LOG_HOME" value="../sell/logs"/>
+    </springProfile>
+
     <!--<property name="LOG_HOME" value="../sell/src/test"/>-->
-    <property name="LOG_HOME" value="../home/logs"/>
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
