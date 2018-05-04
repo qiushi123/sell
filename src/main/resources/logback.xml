@@ -3,7 +3,7 @@
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
     <!-- 多环境设置 （这里测试和线上日志地址不同）-->
     <springProfile name="prod">
-        <property name="LOG_HOME" value="/home/logs/sell-log"/>
+        <property name="LOG_HOME" value="../home/logs/sell-log"/>
     </springProfile>
     <springProfile name="test">
         <property name="LOG_HOME" value="../sell/logs"/>
@@ -24,7 +24,7 @@
             <!--日志文件输出的文件名-->
             <FileNamePattern>${LOG_HOME}/sell.log.%d{yyyy-MM-dd}.log</FileNamePattern>
             <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
