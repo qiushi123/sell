@@ -49,7 +49,6 @@
 
         img {
             border: 0;
-            height: 6rem;
             vertical-align: middle
         }
 
@@ -66,6 +65,7 @@
         html, body {
             width: 100%;
             height: 100%;
+            background-color: #eee;
         }
 
         #app {
@@ -75,14 +75,39 @@
             padding: 3rem;
         }
 
+        #app #showImg img {
+            width: 100%;
+        }
+
         .smallRutine h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #333;
             font-weight: 600;
+            padding: 1rem 0rem;
+            border-bottom: 0.2rem solid blue;
+        }
+
+        .smallRutine ul {
+            margin-top: 1rem;
         }
 
         .smallRutine ul li {
-            margin-top: 1.5rem;
+            display: flex;
+            padding: 1rem 0.5rem;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #666;
+        }
+
+        .smallRutine ul li .left {
+            width: 3rem;
+            text-align: center;
+        }
+
+        .smallRutine ul li a {
+            display: block;
+            font-size: 1.8rem;
+            color: #333;
+            line-height: 1.8rem;
         }
 
         .game {
@@ -98,6 +123,7 @@
         .game .gameList {
             display: flex;
             margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .gameList div {
@@ -119,6 +145,7 @@
             text-align: center;
             height: 2rem;
             line-height: 2rem;
+            margin-bottom: 1rem;
         }
 
         .gameList div a span:hover {
@@ -127,7 +154,27 @@
 
         .gameList div a img {
             flex-grow: 1;
+            width: 100%;
             border: 1px solid #000;
+        }
+
+        /*下面设置的网页中显示的心的图案*/
+        @font-face {
+            font-family: 'iconfont';  /* project id 604584 */
+            src: url('http://at.alicdn.com/t/font_604584_k37j50lekvz8semi.eot');
+            src: url('http://at.alicdn.com/t/font_604584_k37j50lekvz8semi.eot?#iefix') format('embedded-opentype'),
+            url('http://at.alicdn.com/t/font_604584_k37j50lekvz8semi.woff') format('woff'),
+            url('http://at.alicdn.com/t/font_604584_k37j50lekvz8semi.ttf') format('truetype'),
+            url('http://at.alicdn.com/t/font_604584_k37j50lekvz8semi.svg#iconfont') format('svg');
+        }
+
+        .iconfont {
+            font-family: "iconfont";
+            font-size: 1.6rem;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: 0.2px;
+            -moz-osx-font-smoothing: grayscale;
         }
     </style>
 
@@ -135,6 +182,9 @@
 </head>
 <body>
 <div id="app">
+    <div id="showImg">
+
+    </div>
     <div class="smallRutine">
         <h1>30天零基础实战入门小程序系列</h1>
         <!--小程序自学文章列表-->
@@ -201,6 +251,25 @@
         doc.addEventListener('DOMContentLoaded', recalc, false);
     }
     fun(document, window);
+    // 判断访问的客户端
+    function browserRedirect() {
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+            //跳转移动端页面
+            $('#showImg').html('<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525588054&di=816a9c2aba1a2bc7de102246383e5930&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.christiantimes.cn%2Fassets%2Fcache%2F620x418%2Fassets%2Fmedia%2Fpost%2F201710%2F24989%2Fwww.christiantimes.cn-500416617.jpg" />')
+        } else {
+            $('#showImg').html('<img src="./static/images/study.jpg" />')
+        }
+    }
+    browserRedirect();
 
 
     var baseUrl = "";
@@ -231,7 +300,13 @@
                 lists.forEach(function (item, index) {
                     htm += `
                             <li class="newli">
-                                <a href="${url}+${item.aid}" >${index + 1} .${item.title}</a>
+                                <div class="left">
+                                    <span class="iconfont">&#xe755;</span>
+                                </div>
+                                <div class="right">
+                                    <a href="${url}+${item.aid}" >${index + 1} .${item.title}</a>
+                                </div>
+                                
                             </li>`
                 });
                 var $ul = $("#ml");
