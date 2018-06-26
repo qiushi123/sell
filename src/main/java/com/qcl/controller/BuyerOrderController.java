@@ -70,7 +70,7 @@ public class BuyerOrderController {
         return ResultApiUtil.success(ResultEnum.RESULT_OK, map);
     }
 
-    //订单列表
+    //某一个用户的订单列表
 
     /**
      * 在postman的x-www-from-urlencoded下传入下列格式的参数
