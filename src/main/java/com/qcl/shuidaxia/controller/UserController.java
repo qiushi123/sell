@@ -2,15 +2,22 @@ package com.qcl.shuidaxia.controller;
 
 import com.qcl.api.ResultApi;
 import com.qcl.dataobject.User;
+import com.qcl.enums.ResultEnum;
+import com.qcl.exception.SellException;
+import com.qcl.form.UserForm;
 import com.qcl.shuidaxia.service.UserService;
 import com.qcl.utils.ResultApiUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import javax.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,32 +44,49 @@ public class UserController {
         return ResultApiUtil.success(user);
     }
 
-    //用户注册
-    @GetMapping("/save")
-    public ResultApi save(
-                          @RequestParam(name = "phone") String phone,
-                          @RequestParam(name = "name") String name,
-                          @RequestParam(name = "password") String password,
-                          @RequestParam(name = "openid") String openid) {
+
+    /**
+     * 用户注册或重置信息
+     * 使用BindingResult校验参数
+     *
+     * @param userForm
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping("/save")
+    public ResultApi save(@Valid UserForm userForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("[注册用户] 参数不正确，orderForm={}", userForm);
+            throw new SellException(ResultEnum.PARAM_ERROR.getCode()
+                    , bindingResult.getFieldError().getDefaultMessage());
+        }
         User user = new User();
-        user.setPhone(phone);
-        user.setPassword(password);
-        user.setName(name);
-        user.setOpenid(openid);
+        user.setPhone(userForm.getPhone());
+        user.setPassword(userForm.getPassword());
+        user.setName(userForm.getName());
+        user.setOpenid(userForm.getOpenid());
         User user1 = service.save(user);
         return ResultApiUtil.success(user1);
     }
 
+    /**
+     * @param appid  小程序appid
+     * @param secret 小程序密匙
+     * @param code   wx.login返回的临时code
+     * @return
+     */
     @GetMapping("/wechat")
-    public String getWeChatUserInfo(@RequestParam(name = "code") String code) {
+    public String getWeChatUserInfo(@RequestParam(name = "appid") String appid,
+                                    @RequestParam(name = "secret") String secret,
+                                    @RequestParam(name = "code") String code) {
         //https://api.weixin.qq.com/sns/jscode2session?appid=APPID
         // &secret=SECRET&js_code=JSCODE&grant_type=authorization_code
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=wx7c54942dfc87f4d8&secret=" +
-                "79f737d1d2f9473b0a659f52ff404067&js_code=" + code + "&grant_type=authorization_code";
-        String user = restTemplate.getForObject(url, String.class);
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret +
+                "&js_code=" + code + "&grant_type=authorization_code";
+        String json = restTemplate.getForObject(url, String.class);
         //        return ResultApiUtil.success(user);
         //        JSONObject json = restTemplate.getForEntity(url, JSONObject.class).getBody();
-        return user;
+        return json;
     }
 
 }

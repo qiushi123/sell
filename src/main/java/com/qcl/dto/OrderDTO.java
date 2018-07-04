@@ -5,6 +5,7 @@ import com.qcl.dataobject.OrderDetail;
 import com.qcl.enums.OrderStatusEnum;
 import com.qcl.enums.PayStatusEnum;
 import com.qcl.utils.serializer.Date2LongSerializer;
+import com.qcl.utils.serializer.Date2StringSerializer;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class OrderDTO {
 
     @JsonSerialize(using = Date2LongSerializer.class)//用于把date类型转换为long类型
     private Date createTime;
-    @JsonSerialize(using = Date2LongSerializer.class)//用于把date类型转换为long类型
+    @JsonSerialize(using = Date2StringSerializer.class)//用于把date类型转换为string类型
     private Date updateTime;
     private List<OrderDetail> orderDetailList;
 }

@@ -13,6 +13,7 @@ import com.qcl.utils.ResultApiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -88,7 +89,9 @@ public class BuyerOrderController {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
 
-        PageRequest request = new PageRequest(page, size);
+        //按订单创建时间到排序，新订单在最前面
+        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
+        PageRequest request = new PageRequest(page, size,sort);
         Page<OrderDTO> orderDTOPage = orderService.findList(openid, request);
         return ResultApiUtil.success(orderDTOPage.getContent());
     }
