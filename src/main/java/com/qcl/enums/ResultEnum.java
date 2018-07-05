@@ -14,6 +14,7 @@ public enum ResultEnum {
     RESULT_NO(-101, "没有这条结果"),
     RESULT_OK(100, "成功"),
     PRODUCT_NOT_EXIST(10, "商品不存在"),
+    CODE_NOT_EXIST(12, "验证码不存在"),
     PRODUCT_ERROR_0(11, "商品库存已经为零"),
     ORDER_NOT_EXIST(20, "订单不存在"),
     ORDER_DETAIL_NOT_EXIST(21, "订单详情不存在"),
@@ -21,7 +22,7 @@ public enum ResultEnum {
     ORDER_UPDATE_FAIL(23, "订单状态更新失败"),
     ORDER_DETAIL_EMPTY(24, "订单里商品为空"),
     ORDER_PAY_STATUS_ERROR(25, "订单支付状态不正确"),
-    ORDER_OPENID_ERROR(26,"查询的订单和用户不匹配"),
+    ORDER_OPENID_ERROR(26, "查询的订单和用户不匹配"),
     //购物车相关
     CART_EMPTY(31, "购物车不能为空"),;
 

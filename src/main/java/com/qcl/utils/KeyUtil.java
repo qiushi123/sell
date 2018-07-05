@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * Created by qcl on 2018/3/14.
+ * 生成随机订单号的工具类
  */
 public class KeyUtil {
     /*
