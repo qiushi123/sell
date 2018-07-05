@@ -15,6 +15,7 @@ public enum ResultEnum {
     RESULT_OK(100, "成功"),
     PRODUCT_NOT_EXIST(10, "商品不存在"),
     CODE_NOT_EXIST(12, "验证码不存在"),
+    USER_HAVE_EXIST(13, "用户已经验证过"),
     PRODUCT_ERROR_0(11, "商品库存已经为零"),
     ORDER_NOT_EXIST(20, "订单不存在"),
     ORDER_DETAIL_NOT_EXIST(21, "订单详情不存在"),

@@ -71,6 +71,10 @@ public class AuthCodeController {
         if (codeBean == null) {
             throw new SellException(ResultEnum.CODE_NOT_EXIST);
         }
+        AuthCodeBean codeBean2 = service.findOneOpenid(codeForm.getOpenid());
+        if (codeBean2 != null) {
+            throw new SellException(ResultEnum.USER_HAVE_EXIST);
+        }
 
 
         AuthCodeBean bean = new AuthCodeBean();

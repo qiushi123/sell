@@ -1,4 +1,4 @@
 spring:
   profiles:
     #上线前必看，prod 正式，test 测试
-    active: prod
+    active: test
