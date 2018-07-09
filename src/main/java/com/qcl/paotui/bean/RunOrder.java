@@ -40,7 +40,7 @@ public class RunOrder {
     private String buyerOpenid;
     //买家愿意出的价钱
     private Float orderAmount;
-    //订单状态，-1取消订单，0新下单，1已抢单，2订单完成
+    //订单状态，-1取消订单，0新下单，1已抢单，2已送达，3订单完成
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
 
     @CreatedDate

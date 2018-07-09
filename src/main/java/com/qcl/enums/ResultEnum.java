@@ -29,7 +29,9 @@ public enum ResultEnum {
     CART_EMPTY(31, "购物车不能为空"),
     //用户相关
     USER_HAS_REGISTER(41, "用户已经注册过"),
-    USER_HAVE_EXIST(43, "用户已经验证过");
+    USER_HAVE_EXIST(43, "用户已经验证过"),
+    USER_NO_LOGIN(44, "用户没有登陆"),
+    USER_NO_AUTHORITY(45, "没有操作权限");
 
 
     private Integer code;

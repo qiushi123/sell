@@ -1,6 +1,7 @@
 package com.qcl.paotui.runorder;
 
 import com.qcl.api.ResultApi;
+import com.qcl.enums.OrderStatusEnum;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
 import com.qcl.paotui.bean.RunOrder;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,7 +76,7 @@ public class RunnOrderController {
         }
 
         RunOrder order = service.findOne(orderForm.getOrderid());
-        if (order==null) {
+        if (order == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         //订单状态，-1取消订单，0新下单，1已抢单，2订单完成
@@ -82,6 +84,7 @@ public class RunnOrderController {
             throw new SellException(ResultEnum.ORDER_HAS_ROBBED);
         }
 
+        order.setOrderStatus(OrderStatusEnum.HAS_BE_ROBBED.getCode());//设置已被抢单
         order.setRunnerId(orderForm.getOpenid());
         order.setRunnerName(orderForm.getName());
         order.setRunnerPhone(orderForm.getPhone());
@@ -176,4 +179,46 @@ public class RunnOrderController {
         return ResultApiUtil.success(orderList);
     }
 
+    @PostMapping("/changeOrder")
+    public ResultApi changeOrder(
+            @RequestParam("orderid") String orderid,
+            @RequestParam("openid") String openid,
+            @RequestParam("orderType") Integer orderType) {
+        if (StringUtils.isEmpty(orderid)) {
+            log.error("[查询订单列表] 订单号不能为空");
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        if (StringUtils.isEmpty(openid)) {
+            log.error("[查询订单列表] openid不能为空");
+            throw new SellException(ResultEnum.USER_NO_LOGIN);
+        }
+        if (ObjectUtils.isEmpty(orderType) || orderType == 0) {
+            log.error("[修改订单] 订单状态不能为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        //订单状态，-1取消订单，0新下单，1已抢单，2已送达，3订单完成
+        RunOrder order = service.findOne(orderid);
+        if (order == null) {
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        if(orderType==OrderStatusEnum.SENTED.getCode()){
+            if (!openid.equals(order.getRunnerId())) {//只有抢单的跑腿员才能送达
+                log.error("[修改订单] 您没有操作权限");
+                throw new SellException(ResultEnum.USER_NO_AUTHORITY);
+            }
+        }else if(orderType==OrderStatusEnum.CANCEL.getCode()
+                ||orderType==OrderStatusEnum.FINISHED.getCode()){//只有用户才能取消或者确认订单
+            if (!openid.equals(order.getBuyerOpenid())) {//只有抢单的跑腿员才能送达
+                log.error("[修改订单] 您没有操作权限");
+                throw new SellException(ResultEnum.USER_NO_AUTHORITY);
+            }
+        }
+
+
+        order.setOrderStatus(orderType);
+        RunOrder runOrder = service.create(order);
+        return ResultApiUtil.success(runOrder);
+
+    }
 }

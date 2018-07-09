@@ -9,8 +9,9 @@ import lombok.Getter;
 @Getter
 public enum OrderStatusEnum {
     NEW(0, "新下订单"),
-    HASBEROBBED(1,"已经被抢单"),
-    FINISHED(2, "完成订单"),
+    HAS_BE_ROBBED(1,"已经被抢单"),
+    SENTED(2,"已经送达"),
+    FINISHED(3, "完成订单"),
     CANCEL(-1, "取消订单");
 
     OrderStatusEnum(Integer code, String message) {
@@ -21,4 +22,11 @@ public enum OrderStatusEnum {
     private Integer code;
     private String message;
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }
