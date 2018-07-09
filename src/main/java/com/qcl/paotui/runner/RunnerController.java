@@ -63,6 +63,7 @@ public class RunnerController {
         bean.setName(runnerForm.getName());
         bean.setPhone(runnerForm.getPhone());
         bean.setCardId(runnerForm.getCardid());
+        bean.setAddress(runnerForm.getAddress());
         bean.setType(1);//默认新注册用户都处于审核中的状态
 
         Runner bean1 = service.save(bean);

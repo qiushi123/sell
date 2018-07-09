@@ -19,4 +19,5 @@ public class Runner {
     private String cardId;//身份证号
     private String address;//常住地址
     private int type;//-1审核失败，1审核中的跑腿员，2审核通过
+    private String refuseDesc;//审核失败时的文案：如果是审核失败请给出失败原因
 }
