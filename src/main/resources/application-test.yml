@@ -5,8 +5,8 @@ spring:
   #数据库相关配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    #这里加上后缀用来防止mysql乱码
-    url: jdbc:mysql://47.97.192.116:3306/sell?characterEncoding=utf-8&useSSL=false
+    #这里加上后缀用来防止mysql乱码,serverTimezone=GMT%2b8设置时区
+    url: jdbc:mysql://47.97.192.116:3306/sell?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8
     username: qcl
     password: QiuShi123!
   jpa:
