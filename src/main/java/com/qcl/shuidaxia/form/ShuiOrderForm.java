@@ -12,6 +12,7 @@ import lombok.Data;
  */
 @Data
 public class ShuiOrderForm {
+    private String orderId;
     @NotNull(message = "会员编号不能为空")
     private Long userId;
     @NotEmpty(message = "姓名不能为空")
@@ -34,6 +35,8 @@ public class ShuiOrderForm {
     private Integer gongjitong;
     private Integer yushui;
     private Integer xinmaishui;
+    private Integer shouru;//新加收入
+    private Integer zhichu;//新加支出
     @NotEmpty(message = "收款人不能为空")
     private String shoukuanren;
     private String beizhu;

@@ -44,7 +44,11 @@ public class ShuiOrderController {
         }
 
         ShuiOrder order = new ShuiOrder();
-        order.setOrderId(KeyUtil.genUniqueKey());
+        if (orderForm.getOrderId() == null || StringUtils.isEmpty(orderForm.getOrderId())) {//流水已经存在就更新
+            order.setOrderId(KeyUtil.genUniqueKey());
+        } else {
+            order = service.findByOrderid(orderForm.getOrderId());
+        }
         order.setBuyerId(orderForm.getUserId());
         order.setBuyerName(orderForm.getName());
         order.setBuyerPhone(orderForm.getPhone());
@@ -57,6 +61,8 @@ public class ShuiOrderController {
         order.setYushui(orderForm.getYushui());
         order.setXinmaishui(orderForm.getXinmaishui());
         order.setShoukuanren(orderForm.getShoukuanren());
+        order.setShouru(orderForm.getShouru());
+        order.setZhichu(orderForm.getZhichu());
         order.setBeizhu(orderForm.getBeizhu());
 
         ShuiOrder result = service.create(order);

@@ -4,8 +4,10 @@ import com.qcl.api.ResultApi;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
 import com.qcl.shuidaxia.admin.ShuiAdminService;
+import com.qcl.shuidaxia.bean.ShuiAdmin;
 import com.qcl.shuidaxia.bean.ShuiUser;
 import com.qcl.shuidaxia.form.ShuiVipForm;
+import com.qcl.utils.Base64Utils;
 import com.qcl.utils.ProtectUserUtils;
 import com.qcl.utils.ResultApiUtil;
 
@@ -134,6 +136,41 @@ public class ShuiUserController {
         }
 
         return ResultApiUtil.success(user);
+    }
+
+    /**
+     * 管理员登陆，
+     * 查询前需要校验管理员身份
+     */
+    @PostMapping("/adminLogin")
+    public ResultApi adminLogin(
+            @RequestParam("adminPhone") String adminPhone,
+            @RequestParam("adminPassword") String adminPassword) {
+
+        if (StringUtils.isEmpty(adminPhone) || StringUtils.isEmpty(adminPassword)) {
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+        //校验管理员
+        ShuiAdmin admin = adminService.findByAdminPhone(adminPhone);
+        if (admin == null) {
+            throw new SellException(ResultEnum.USER_ADMIN_NO);
+        }
+
+        String password = "";
+        try {
+            password = Base64Utils.encryptBASE64(admin.getAdminPassword().getBytes());
+            password = password.trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.error("[查询用户] 加密 password={}", password);
+        log.error("[查询用户] h5加密 adminPassword={}", adminPassword);
+        boolean equals = password.equals(adminPassword);
+        log.error("" + equals);
+        if (!adminPassword.equals(password)) {
+            throw new SellException(ResultEnum.USER_PASSWORD_ERROR);
+        }
+        return ResultApiUtil.success(admin);
     }
 
 

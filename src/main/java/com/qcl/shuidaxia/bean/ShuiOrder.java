@@ -41,6 +41,8 @@ public class ShuiOrder {
     private Integer yushui;//余水
     private Integer xinmaishui;//新买水
     private String shoukuanren;//收款人
+    private Integer shouru;//新加收入
+    private Integer zhichu;//新加支出
     private String beizhu;//备注
     private String time;//手动输入配送时间
     @CreatedDate

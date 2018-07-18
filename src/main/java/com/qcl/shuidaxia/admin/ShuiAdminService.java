@@ -24,14 +24,19 @@ public class ShuiAdminService {
     }
 
 
-    /**
-     * 查询管理员信息
-     *
-     * @param userPhone
-     * @return
-     */
-    public ShuiAdmin findByUserPhone(String userPhone) {
-        return repository.findByAdminPhone(userPhone);
+    //查询管理员信息
+    public ShuiAdmin findByAdminName(String adminName) {
+        return repository.findByAdminName(adminName);
+    }
+
+    //查询管理员信息
+    public ShuiAdmin findByAdminPhone(String adminPhone) {
+        return repository.findByAdminPhone(adminPhone);
+    }
+
+    //查询管理员信息
+    public ShuiAdmin findByAdminCardId(String adminCardId) {
+        return repository.findByAdminCardId(adminCardId);
     }
 
 

@@ -31,7 +31,9 @@ public enum ResultEnum {
     USER_HAS_REGISTER(41, "用户已经注册过"),
     USER_HAVE_EXIST(43, "用户已经验证过"),
     USER_NO_LOGIN(44, "用户没有登陆"),
-    USER_NO_AUTHORITY(45, "没有操作权限");
+    USER_ADMIN_NO(45, "管理员不存在"),
+    USER_PASSWORD_ERROR(46, "密码错误"),
+    USER_NO_AUTHORITY(47, "没有操作权限");
 
 
     private Integer code;
