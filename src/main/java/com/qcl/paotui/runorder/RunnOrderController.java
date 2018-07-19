@@ -179,6 +179,7 @@ public class RunnOrderController {
         return ResultApiUtil.success(orderList);
     }
 
+    //改变订单状态
     @PostMapping("/changeOrder")
     public ResultApi changeOrder(
             @RequestParam("orderid") String orderid,
@@ -192,7 +193,7 @@ public class RunnOrderController {
             log.error("[查询订单列表] openid不能为空");
             throw new SellException(ResultEnum.USER_NO_LOGIN);
         }
-        if (ObjectUtils.isEmpty(orderType) || orderType == 0) {
+        if (ObjectUtils.isEmpty(orderType) ) {
             log.error("[修改订单] 订单状态不能为空");
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
