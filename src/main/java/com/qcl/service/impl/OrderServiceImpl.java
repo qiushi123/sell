@@ -148,7 +148,6 @@ public class OrderServiceImpl implements OrderService {
         productInfoService.addcreaseStock(cartDTOList);
         //如果已支付，需要退款
         if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCESS.getCode())) {
-            // TODO: 2018/3/18 退款功能还没写
             log.info("[订单取消]成功，执行退款操作");
 
         }

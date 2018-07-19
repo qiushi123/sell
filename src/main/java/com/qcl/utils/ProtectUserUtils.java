@@ -1,5 +1,6 @@
 package com.qcl.utils;
 
+import com.qcl.huishou.bean.HuishouOrder;
 import com.qcl.paotui.bean.RunOrder;
 import com.qcl.shuidaxia.bean.ShuiUser;
 
@@ -11,8 +12,18 @@ import java.util.List;
  */
 public class ProtectUserUtils {
 
-    //保护用户订单信息
+    //跑腿保护用户订单信息
     public static List<RunOrder> protectUserOrders(List<RunOrder> orders) {
+        orders.stream().forEach(runOrder -> {
+            runOrder.setBuyerName(protectUserName(runOrder.getBuyerName()));
+            runOrder.setBuyerPhone(protectUserPhone(runOrder.getBuyerPhone()));
+            runOrder.setBuyerAdderss(protectUserAddress(runOrder.getBuyerAdderss()));
+        });
+        return orders;
+    }
+
+    //回收保护用户订单信息
+    public static List<HuishouOrder> protectHuishouUserOrders(List<HuishouOrder> orders) {
         orders.stream().forEach(runOrder -> {
             runOrder.setBuyerName(protectUserName(runOrder.getBuyerName()));
             runOrder.setBuyerPhone(protectUserPhone(runOrder.getBuyerPhone()));
@@ -31,7 +42,7 @@ public class ProtectUserUtils {
 
     //保护用户姓名
     public static String protectUserName(String name) {
-        if (name==null) {
+        if (name == null) {
             return "";
         }
         String realname = "";
@@ -51,7 +62,7 @@ public class ProtectUserUtils {
 
     //保护用户手机号
     public static String protectUserPhone(String mobile) {
-        if (mobile==null) {
+        if (mobile == null) {
             return "";
         }
         char[] m = mobile.toCharArray();
@@ -65,7 +76,7 @@ public class ProtectUserUtils {
 
     //保护用户地址
     public static String protectUserAddress(String address) {
-        if (address==null) {
+        if (address == null) {
             return "";
         }
         char[] m = address.toCharArray();
