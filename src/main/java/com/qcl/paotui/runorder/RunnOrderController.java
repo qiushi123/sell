@@ -153,12 +153,13 @@ public class RunnOrderController {
 
     /**
      * 查询所有可以被抢的订单
+     * 匹配城市，只展示跑腿员所在城市的订单
      */
     @PostMapping("/canRobbedOrders")
     public ResultApi<List<RunOrder>> canRobbedOrders(
             @RequestParam("runnerOpenid") String runnerOpenid,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size) {
+            @RequestParam(value = "size", defaultValue = "100") int size) {
         if (StringUtils.isEmpty(runnerOpenid)) {
             log.error("[查询订单列表] 跑腿员openid为空");
             throw new SellException(ResultEnum.PARAM_ERROR);
@@ -169,11 +170,12 @@ public class RunnOrderController {
             log.error("[查询可抢订单列表] 跑腿员没有审核通过");
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
+        String city=runner.getCity();
 
         //按订单创建时间到排序，新订单在最前面
         Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
         PageRequest request = new PageRequest(page, size, sort);
-        Page<RunOrder> orderPage = service.canRobbedOrders(request);
+        Page<RunOrder> orderPage = service.canRobbedOrders(city,request);
 
         List<RunOrder> orderList = ProtectUserUtils.protectUserOrders(orderPage.getContent());
         return ResultApiUtil.success(orderList);
@@ -193,7 +195,7 @@ public class RunnOrderController {
             log.error("[查询订单列表] openid不能为空");
             throw new SellException(ResultEnum.USER_NO_LOGIN);
         }
-        if (ObjectUtils.isEmpty(orderType) ) {
+        if (ObjectUtils.isEmpty(orderType)) {
             log.error("[修改订单] 订单状态不能为空");
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
@@ -203,13 +205,13 @@ public class RunnOrderController {
         if (order == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        if(orderType==OrderStatusEnum.SENTED.getCode()){
+        if (orderType == OrderStatusEnum.SENTED.getCode()) {
             if (!openid.equals(order.getRunnerId())) {//只有抢单的跑腿员才能送达
                 log.error("[修改订单] 您没有操作权限");
                 throw new SellException(ResultEnum.USER_NO_AUTHORITY);
             }
-        }else if(orderType==OrderStatusEnum.CANCEL.getCode()
-                ||orderType==OrderStatusEnum.FINISHED.getCode()){//只有用户才能取消或者确认订单
+        } else if (orderType == OrderStatusEnum.CANCEL.getCode()
+                || orderType == OrderStatusEnum.FINISHED.getCode()) {//只有用户才能取消或者确认订单
             if (!openid.equals(order.getBuyerOpenid())) {//只有抢单的跑腿员才能送达
                 log.error("[修改订单] 您没有操作权限");
                 throw new SellException(ResultEnum.USER_NO_AUTHORITY);

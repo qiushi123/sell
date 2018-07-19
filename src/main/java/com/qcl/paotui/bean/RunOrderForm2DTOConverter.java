@@ -1,6 +1,5 @@
 package com.qcl.paotui.bean;
 
-import com.google.gson.Gson;
 import com.qcl.paotui.form.RunOrderForm;
 import com.qcl.utils.KeyUtil;
 
@@ -18,6 +17,7 @@ public class RunOrderForm2DTOConverter {
         orderDTO.setBuyerOpenid(orderForm.getOpenid());
         orderDTO.setBuyerName(orderForm.getName());
         orderDTO.setBuyerPhone(orderForm.getPhone());
+        orderDTO.setCity(orderForm.getCity());
         orderDTO.setBuyerAdderss(orderForm.getAddress());
         orderDTO.setFromAddress(orderForm.getFrom_address());
         orderDTO.setOrderAmount(orderForm.getOrder_amount());

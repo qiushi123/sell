@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
@@ -33,6 +34,7 @@ public class RunnOrderService {
 
     /**
      * 查询一个订单
+     *
      * @param orderid
      * @return
      */
@@ -69,18 +71,19 @@ public class RunnOrderService {
     /**
      * 某一个跑腿员抢的所有订单
      *
+     * @param city:城市很重要，跑腿员只能看到同城市的订单
      * @param pageable
      * @return
      */
-    public Page<RunOrder> canRobbedOrders(PageRequest pageable) {
+    public Page<RunOrder> canRobbedOrders(String city, PageRequest pageable) {
         //查询条件构造
         Specification<RunOrder> spec = (Specification<RunOrder>) (root, query, cb) -> {
-            Predicate p3 = cb.equal(root.get("orderStatus"), 0);
-            return cb.and(p3);
-            // 下面方式使用JPA的API设置了查询条件，所以不需要再返回查询条件Predicate给Spring Data Jpa，
-            // 故最后return null;即可。
-            //query.where(p);
-            //return  null;
+            List<Predicate> list = new ArrayList<Predicate>();
+            list.add(cb.equal(root.get("orderStatus"), 0));
+            list.add(cb.equal(root.get("city"), city));
+
+            Predicate[] p = new Predicate[list.size()];
+            return cb.and(list.toArray(p));
         };
         return repository.findAll(spec, pageable);
     }

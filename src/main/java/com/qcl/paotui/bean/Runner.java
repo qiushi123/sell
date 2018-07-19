@@ -16,6 +16,7 @@ public class Runner {
     private String openId;
     private String name;
     private String phone;
+    private String city;//城市很重要，跑腿员只能看到同城市的订单
     private String cardId;//身份证号
     private String address;//常住地址
     private int type;//-1审核失败，1审核中的跑腿员，2审核通过

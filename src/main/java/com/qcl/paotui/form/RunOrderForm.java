@@ -25,6 +25,8 @@ public class RunOrderForm {
 
     @NotEmpty(message = "送到哪儿不能为空")
     private String address;
+    @NotEmpty(message = "城市不能为空")
+    private String city;//城市很重要，跑腿员只能看到同城市的订单
     @NotEmpty(message = "去哪儿取不能为空")
     private String from_address;
     @NotNull(message = "代取费用不能为空")

@@ -34,6 +34,7 @@ public class RunOrder {
     private String buyerName;
     private String buyerPhone;
     private String buyerAdderss;
+    private String city;//城市很重要，跑腿员只能看到同城市的订单
     //去哪儿取
     private String fromAddress;
     //买家微信id
