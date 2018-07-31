@@ -30,7 +30,7 @@ import lombok.Data;
 public class ShuiUser {
     //买家信息相关
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;//主键
 
     private String userName;
@@ -50,6 +50,7 @@ public class ShuiUser {
     private String tuidingyuanyin;//退订原因
     private String tuidingjieguo;//退订结果
     private String beizhu;//备注
+    private String yajinImg;//押金条图片url
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
