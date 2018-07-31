@@ -73,7 +73,7 @@ public class UploadController {
             if ("test".equals(active)) {//测试环境
                 uploadDir = "/Users/qcl/upload/";
             } else {//线上环境的图片存储目录
-                uploadDir = "../usr/share/nginx/html/upload/";
+                uploadDir = "//usr/share/nginx/html/upload/";
             }
 
             //如果目录不存在，自动创建文件夹
