@@ -6,9 +6,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     #这里加上后缀用来防止mysql乱码
-    url: jdbc:mysql://47.97.192.116:3306/sell?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8
-    username: qcl
-    password: QiuShi123!
+    url: ENC(dpf1LW8RN2RxMEMtrzBwjMQkqe0OEDbW21Mt8/ZSfsmMuxx7H0U1LBR8lvSMF3vS38w7le+a0xDJLmOaLD3FYe3lOjOCJMfQRnlJ5vEFalPxk8BDJ61sD80S2FU95kjSLTMDqzw/2fqJoq1LEGvuHA==)
+    username: ENC(QmwlqZo9jNAzj9c3NLar5Q==)
+    password: ENC(S7sDWB3p9R4hGAc6oXU0m7MOleqpOT6c)
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,11 +23,8 @@ spring:
 server:
   port: 80
 
-#配置日志,这里配置太过简单，所以一般在外面配置logback.xml来实现日志配置
-#logging:
-#  pattern:
-#    console: "%d - %msg%n" #设置控制台日子输出格式
-#  path: /var/log/tomcat
-#  level:
-#    com.qcl.LoggerTest: debug #设置com.qcl.LoggerTest的日志输出级别
+#jasypt加密的密匙
+jasypt:
+  encryptor:
+    password: EbfYkitulv73I2p0mXI50JMXoaxZTKJ7
 

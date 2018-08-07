@@ -2,7 +2,6 @@ package com.qcl.utils;
 
 import com.qcl.huishou.bean.HuishouOrder;
 import com.qcl.paotui.bean.RunOrder;
-import com.qcl.shuidaxia.bean.ShuiUser;
 
 import java.util.List;
 
@@ -32,13 +31,6 @@ public class ProtectUserUtils {
         return orders;
     }
 
-    //水大侠：保护用户的敏感信息
-    public static ShuiUser protectShuiDaXiaUserInfo(ShuiUser user) {
-        user.setUserName(protectUserName(user.getUserName()));
-        user.setUserPhone(protectUserPhone(user.getUserPhone()));
-        user.setUserAdderss(protectUserAddress(user.getUserAdderss()));
-        return user;
-    }
 
     //保护用户姓名
     public static String protectUserName(String name) {
