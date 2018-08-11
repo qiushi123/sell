@@ -19,5 +19,4 @@ public interface RunOrderRepository extends JpaRepository<RunOrder, String>, Jpa
 
     //查询一个订单
     RunOrder findByOrderId(String orderid);
-    //    Runner findByOpenId(String openid);
 }

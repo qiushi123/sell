@@ -22,5 +22,4 @@ public interface OrderRepository extends JpaRepository<HuishouOrder, String>, Jp
 
     //查询一个订单
     HuishouOrder findByOrderId(String orderid);
-    //    Runner findByOpenId(String openid);
 }

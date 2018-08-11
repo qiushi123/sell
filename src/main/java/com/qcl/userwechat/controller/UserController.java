@@ -4,11 +4,13 @@ import com.qcl.api.ResultApi;
 import com.qcl.dataobject.User;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
+import com.qcl.form.TestUserForm;
 import com.qcl.form.UserForm;
 import com.qcl.userwechat.service.UserService;
 import com.qcl.utils.ResultApiUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,4 +91,42 @@ public class UserController {
         return json;
     }
 
+
+    /*
+    * 学习小程序相关接口
+    * */
+    //测试注册
+    @PostMapping("/testSave")
+    public ResultApi testSave(@Valid TestUserForm userForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("[注册用户] 参数不正确，orderForm={}", userForm);
+            throw new SellException(ResultEnum.PARAM_ERROR.getCode()
+                    , bindingResult.getFieldError().getDefaultMessage());
+        }
+        User user = new User();
+        user.setPhone("15611823666");
+        user.setPassword(userForm.getPassword());
+        user.setName(userForm.getName());
+        user.setOpenid(userForm.getName());
+        User user1 = service.save(user);
+        return ResultApiUtil.success(user1);
+    }
+
+    //测试登陆
+    @PostMapping("/testLogin")
+    public ResultApi testLogin(@Valid TestUserForm userForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("[注册用户] 参数不正确，orderForm={}", userForm);
+            throw new SellException(ResultEnum.PARAM_ERROR.getCode()
+                    , bindingResult.getFieldError().getDefaultMessage());
+        }
+        User user = service.findOne(userForm.getName());
+        if (user == null) {
+            throw new SellException(ResultEnum.USER_NO_HAVE);
+        }
+        if (!StringUtils.pathEquals(userForm.getPassword(), user.getPassword())) {
+            throw new SellException(ResultEnum.USER_PASSWORD_ERROR);
+        }
+        return ResultApiUtil.success(user);
+    }
 }

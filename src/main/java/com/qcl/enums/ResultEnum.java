@@ -34,7 +34,8 @@ public enum ResultEnum {
     USER_ADMIN_NO(45, "管理员不存在"),
     USER_PASSWORD_ERROR(46, "密码错误"),
     USER_NO_AUTHORITY(47, "没有操作权限"),
-    USER_NO(48, "会员不存在");
+    USER_NO(48, "会员不存在"),
+    USER_NO_HAVE(49, "用户不存在");
 
 
     private Integer code;
