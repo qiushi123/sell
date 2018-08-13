@@ -41,7 +41,7 @@ public class ADService {
             List<Predicate> list = new ArrayList<>();
             list.add(cb.equal(root.get("dateTime"), dateTime));
             list.add(cb.equal(root.get("name"), name));
-            list.add(cb.equal(root.get("openid"), openid));
+            //            list.add(cb.equal(root.get("openid"), openid));
 
             Predicate[] p = new Predicate[list.size()];
             return cb.and(list.toArray(p));
