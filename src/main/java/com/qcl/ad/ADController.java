@@ -44,7 +44,7 @@ public class ADController {
         return ResultApiUtil.success(beans);
     }
 
-    //获取某一天的广告点击排名
+    //某一天广告点击增加
     @PostMapping("/clikcAdd")
     public ResultApi clikcAdd(@RequestParam(name = "dateTime") String dateTime,
                               @RequestParam(name = "openid") String openid,
@@ -64,6 +64,41 @@ public class ADController {
             newBean.setDateTime(dateTime);
         }
         return ResultApiUtil.success(service.save(newBean));
+    }
+
+    //某一周广告点击增加
+    @PostMapping("/clickWeekAdd")
+    public ResultApi clickWeekAdd(
+            @RequestParam(name = "weekTime") String weekTime,
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "isVideo") boolean isVideo,
+            @RequestParam(name = "city") String city) {
+        List<AdClickWeekBean> existList = service.findWeekHasExist(weekTime, name);
+
+        AdClickWeekBean newBean = new AdClickWeekBean();
+        if (existList != null && existList.size() > 0) {//今天已经点击过
+            newBean = existList.get(0);//如果存在多个用户，只取第一个
+            if (isVideo) {
+                newBean.setClickVideoNum(newBean.getClickVideoNum() + 1);
+                newBean.setClickAdNum(newBean.getClickAdNum() + 15);
+            } else {
+                newBean.setClickAdNum(newBean.getClickAdNum() + 1);
+            }
+        } else {
+            newBean.setWeekTime(weekTime);
+            newBean.setName(name);
+            newBean.setCity(city);
+            newBean.setSalary("待分配");
+            if (isVideo) {
+                newBean.setClickVideoNum(1);
+                newBean.setClickAdNum(15);
+            } else {
+                newBean.setClickVideoNum(0);
+                newBean.setClickAdNum(0);
+            }
+
+        }
+        return ResultApiUtil.success(service.saveWeek(newBean));
     }
 
 

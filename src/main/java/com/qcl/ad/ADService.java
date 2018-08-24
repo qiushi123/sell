@@ -18,8 +18,13 @@ public class ADService {
     @Autowired
     private InComeRepository repository;
 
+    //每天点广告统计（旧系统）
     @Autowired
     private AdClickNumRepository adClickNumRepository;
+
+    //每周点广告统计（新系统）
+    @Autowired
+    private AdClickWeekNumRepository adClickWeekNumRepository;
 
     /**
      * 查询每天广告收入
@@ -50,9 +55,32 @@ public class ADService {
 
     }
 
+    //查询用户本周是否已经点击过了
+    public List<AdClickWeekBean> findWeekHasExist(String weekTime, String name) {
+        //查询条件构造
+        Specification<AdClickWeekBean> spec = (Specification<AdClickWeekBean>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+            list.add(cb.equal(root.get("weekTime"), weekTime));
+            list.add(cb.equal(root.get("name"), name));
+            //            list.add(cb.equal(root.get("openid"), openid));
+
+            Predicate[] p = new Predicate[list.size()];
+            return cb.and(list.toArray(p));
+        };
+        return adClickWeekNumRepository.findAll(spec);
+
+    }
+
+
     //更新用户点击量，或者保存用户第一次点击量
     public AdClickBean save(AdClickBean bean) {
         return adClickNumRepository.save(bean);
+
+    }
+
+    //更新用户每周点击量，或者保存用户第一次点击量
+    public AdClickWeekBean saveWeek(AdClickWeekBean bean) {
+        return adClickWeekNumRepository.save(bean);
 
     }
 

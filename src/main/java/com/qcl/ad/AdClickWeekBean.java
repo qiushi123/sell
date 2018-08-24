@@ -12,22 +12,22 @@ import lombok.Data;
 
 /**
  * Created by qcl on 2018/6/26.
- * 用户广告点击排名的bean
+ * 用户每周广告点击排名的bean
  */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class AdClickBean {
+public class AdClickWeekBean {
     @Id//主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自动生成
     private Long id;
 
-    private String dateTime;
     private String weekTime;//第几月的第几周
-    private String openid;
     private String name;
     private String city;
-    private Integer clickNum;
+    private Integer clickAdNum;//广告点击量
+    private Integer clickVideoNum;//视频广告点击量
+    private String salary;//每周每人工资
 
 
 }
