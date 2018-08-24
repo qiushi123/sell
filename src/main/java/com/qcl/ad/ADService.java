@@ -27,15 +27,28 @@ public class ADService {
     private AdClickWeekNumRepository adClickWeekNumRepository;
 
     /**
-     * 查询每天广告收入
+     * 查询广告收入列表
      */
     public List<IncomeBean> findAll(Sort sort) {
         return repository.findAll(sort);
     }
 
+    /**
+     * 查询某一周的广告收入
+     */
+    public IncomeBean findShouruOneWeek(String weekTime) {
+        return repository.findByWeekTime(weekTime);
+    }
+
     //查询每天的点击排名
     public List<AdClickBean> findClickList(String dateTime, Sort sort) {
         return adClickNumRepository.findAllByDateTime(dateTime, sort);
+
+    }
+
+    //查询每周的点击排名
+    public List<AdClickWeekBean> findClickWeekList(String weekTime, Sort sort) {
+        return adClickWeekNumRepository.findAllByWeekTime(weekTime, sort);
 
     }
 

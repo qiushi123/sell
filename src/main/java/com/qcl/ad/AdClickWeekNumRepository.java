@@ -1,7 +1,10 @@
 package com.qcl.ad;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.List;
 
 /**
  * 类目
@@ -10,4 +13,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface AdClickWeekNumRepository extends JpaRepository<AdClickWeekBean, Long>
         , JpaSpecificationExecutor<AdClickWeekBean> {
+
+    //点击排名列表
+    List<AdClickWeekBean> findAllByWeekTime(String weekTime, Sort sort);
+
 }

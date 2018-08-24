@@ -1,16 +1,7 @@
 package com.qcl.ad;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.qcl.utils.serializer.Date2StringSerializer;
-
-import org.springframework.data.annotation.CreatedDate;
-
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -24,17 +15,18 @@ public class IncomeBean {
     @Id//主键
     private Long id;
 
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonSerialize(using = Date2StringSerializer.class)//用于把date类型转换为string类型
-    private Date createTime;
+//    @CreatedDate
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @JsonSerialize(using = Date2StringSerializer.class)//用于把date类型转换为string类型
+//    private Date createTime;
 
+    private String weekTime;
     private Float tongchengMoney;
     private Float huishouMoney;
-    private Float daqiqiuMoney;
-
-    private String bigGroup;
-    private String smallGroup;
-    private String pingjun;
+    private Float xiaoyuanMoney;
+    private Float bianchengMoney;
+    private Float daqiqiuMoney;//打泡泡和飞机大战
+    private int fengexian;
+    //    private Float allMoney;//总计
 
 }

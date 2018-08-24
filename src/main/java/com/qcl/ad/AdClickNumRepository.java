@@ -17,6 +17,4 @@ public interface AdClickNumRepository extends JpaRepository<AdClickBean, Long>
 
     //点击排名列表
     List<AdClickBean> findAllByDateTime(String dateTime, Sort sort);
-
-
 }

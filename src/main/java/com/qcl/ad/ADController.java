@@ -5,6 +5,7 @@ import com.qcl.utils.ResultApiUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +32,15 @@ public class ADController {
     //收入列表
     @GetMapping("/shouruList")
     public ResultApi shouruList() {
-        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
         List<IncomeBean> beans = service.findAll(sort);
+        return ResultApiUtil.success(beans);
+    }
+
+    //获取某一天的收入详情
+    @PostMapping("/shouruOneWeek")
+    public ResultApi shouruOneWeek(@RequestParam(name = "weekTime") String weekTime) {
+        IncomeBean beans = service.findShouruOneWeek(weekTime);
         return ResultApiUtil.success(beans);
     }
 
@@ -44,7 +52,7 @@ public class ADController {
         return ResultApiUtil.success(beans);
     }
 
-    //某一天广告点击增加
+    //某一天广告点击增加（旧系统，待废弃）
     @PostMapping("/clikcAdd")
     public ResultApi clikcAdd(@RequestParam(name = "dateTime") String dateTime,
                               @RequestParam(name = "openid") String openid,
@@ -73,7 +81,10 @@ public class ADController {
             @RequestParam(name = "name") String name,
             @RequestParam(name = "isVideo") boolean isVideo,
             @RequestParam(name = "city") String city) {
-        List<AdClickWeekBean> existList = service.findWeekHasExist(weekTime, name);
+        List<AdClickWeekBean> existList = null;
+        if (!StringUtils.isEmpty(name)) {
+            existList = service.findWeekHasExist(weekTime, name.trim());
+        }
 
         AdClickWeekBean newBean = new AdClickWeekBean();
         if (existList != null && existList.size() > 0) {//今天已经点击过
@@ -88,7 +99,7 @@ public class ADController {
             newBean.setWeekTime(weekTime);
             newBean.setName(name);
             newBean.setCity(city);
-            newBean.setSalary("待分配");
+            newBean.setSalary("下周分配");
             if (isVideo) {
                 newBean.setClickVideoNum(1);
                 newBean.setClickAdNum(15);
@@ -102,4 +113,11 @@ public class ADController {
     }
 
 
+    //获取某一周的广告点击排名
+    @PostMapping("/clickWeekList")
+    public ResultApi clickWeekList(@RequestParam(name = "weekTime") String weekTime) {
+        Sort sort = new Sort(Sort.Direction.DESC, "clickAdNum");
+        List<AdClickWeekBean> beans = service.findClickWeekList(weekTime, sort);
+        return ResultApiUtil.success(beans);
+    }
 }

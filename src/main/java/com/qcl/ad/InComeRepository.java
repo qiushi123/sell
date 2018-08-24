@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by qcl on 2017/12/16.
  */
 public interface InComeRepository extends JpaRepository<IncomeBean, Long> {
+    IncomeBean findByWeekTime(String weekTime);
 }
