@@ -99,7 +99,7 @@ public class ADController {
             newBean.setWeekTime(weekTime);
             newBean.setName(name);
             newBean.setCity(city);
-            newBean.setSalary("未发放");
+            newBean.setSalary("待分配");
             if (isVideo) {
                 newBean.setClickVideoNum(1);
                 newBean.setClickAdNum(15);
