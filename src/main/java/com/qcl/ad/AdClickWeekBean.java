@@ -27,7 +27,7 @@ public class AdClickWeekBean {
     private String city;
     private Integer clickAdNum;//广告点击量
     private Integer clickVideoNum;//视频广告点击量
-    private String salary;//每周每人工资
+    private String salary;//已发放，未发放
 
 
 }
