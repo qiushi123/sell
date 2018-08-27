@@ -108,13 +108,16 @@ public class ADController {
             newBean.setSalary("待分配");
             if (isVideo) {
                 newBean.setClickVideoNum(1);
+                newBean.setShareOkNum(0);
                 newBean.setClickAdNum(10);
             } else if (isShareOk) {
+                newBean.setClickVideoNum(0);
                 newBean.setShareOkNum(1);
                 newBean.setClickAdNum(3);
             } else {
                 newBean.setClickVideoNum(0);
                 newBean.setClickAdNum(0);
+                newBean.setShareOkNum(0);
             }
 
         }
