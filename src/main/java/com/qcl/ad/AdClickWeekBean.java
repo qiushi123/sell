@@ -27,6 +27,7 @@ public class AdClickWeekBean {
     private String city;
     private Integer clickAdNum;//广告点击量
     private Integer clickVideoNum;//视频广告点击量
+    private Integer shareOkNum;//打泡泡，飞机大战分享到群的次数
     private String salary;//已发放，未发放
 
 

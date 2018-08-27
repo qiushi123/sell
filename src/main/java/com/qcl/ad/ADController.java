@@ -80,6 +80,7 @@ public class ADController {
             @RequestParam(name = "weekTime") String weekTime,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "isVideo") boolean isVideo,
+            @RequestParam(name = "isShareOk") boolean isShareOk,
             @RequestParam(name = "city") String city) {
         List<AdClickWeekBean> existList = null;
         if (!StringUtils.isEmpty(name)) {
@@ -91,7 +92,12 @@ public class ADController {
             newBean = existList.get(0);//如果存在多个用户，只取第一个
             if (isVideo) {
                 newBean.setClickVideoNum(newBean.getClickVideoNum() + 1);
-                newBean.setClickAdNum(newBean.getClickAdNum() + 15);
+                newBean.setClickAdNum(newBean.getClickAdNum() + 10);
+            } else if (isShareOk) {//分享到群点击+3,每周只允许30次分享到群里
+                if (newBean.getShareOkNum() < 30) {
+                    newBean.setShareOkNum(newBean.getShareOkNum() + 1);
+                    newBean.setClickAdNum(newBean.getClickAdNum() + 3);
+                }
             } else {
                 newBean.setClickAdNum(newBean.getClickAdNum() + 1);
             }
@@ -102,7 +108,10 @@ public class ADController {
             newBean.setSalary("待分配");
             if (isVideo) {
                 newBean.setClickVideoNum(1);
-                newBean.setClickAdNum(15);
+                newBean.setClickAdNum(10);
+            } else if (isShareOk) {
+                newBean.setShareOkNum(1);
+                newBean.setClickAdNum(3);
             } else {
                 newBean.setClickVideoNum(0);
                 newBean.setClickAdNum(0);
