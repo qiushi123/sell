@@ -2,6 +2,7 @@ package com.qcl.utils;
 
 import com.qcl.huishou.bean.HuishouOrder;
 import com.qcl.paotui.bean.RunOrder;
+import com.qcl.paotuischool.bean.RunSchoolOrder;
 
 import java.util.List;
 
@@ -11,6 +12,16 @@ import java.util.List;
  */
 public class ProtectUserUtils {
 
+    //校园跑腿保护用户订单信息
+    public static List<RunSchoolOrder> protectSchoolUserOrders(List<RunSchoolOrder> orders) {
+        orders.stream().forEach(runOrder -> {
+            runOrder.setName(protectUserName(runOrder.getName()));
+            runOrder.setPhone(protectUserPhone(runOrder.getPhone()));
+//            runOrder.setAddress(protectUserAddress(runOrder.getAddress()));
+            runOrder.setNoteContent("抢到单以后才能看");
+        });
+        return orders;
+    }
     //跑腿保护用户订单信息
     public static List<RunOrder> protectUserOrders(List<RunOrder> orders) {
         orders.stream().forEach(runOrder -> {
