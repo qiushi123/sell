@@ -72,27 +72,33 @@ public class SchoolOrderService {
             } else {
                 list.add(cb.equal(root.get("orderStatus"), 1));
             }
-            list.add(cb.equal(root.get("openid"), runnerOpenid));
+            list.add(cb.equal(root.get("runnerId"), runnerOpenid));
             Predicate[] p = new Predicate[list.size()];
             return cb.and(list.toArray(p));
         };
-        Page<RunSchoolOrder> orderMasters = repository.findAll(spec, pageable);
-        List<RunSchoolOrder> orderDTOS = orderMasters.getContent();
-        return new PageImpl<RunSchoolOrder>(orderDTOS);
+        return repository.findAll(spec, pageable);
+        //        Page<RunSchoolOrder> orderMasters = repository.findAll(spec, pageable);
+        //        List<RunSchoolOrder> orderDTOS = orderMasters.getContent();
+        //        return new PageImpl<RunSchoolOrder>(orderDTOS);
     }
 
     /**
      * 所有可以抢的订单
+     * orderType;//0代取快递，1代寄快递
      *
      * @param pageable
      * @return
      */
-    public Page<RunSchoolOrder> canRobbedOrders(PageRequest pageable) {
+    public Page<RunSchoolOrder> canRobbedOrders(int orderType, PageRequest pageable) {
         //查询条件构造
         Specification<RunSchoolOrder> spec = (Specification<RunSchoolOrder>) (root, query, cb) -> {
             List<Predicate> list = new ArrayList<Predicate>();
             list.add(cb.equal(root.get("orderStatus"), 0));
-
+            if (orderType == 1) {
+                list.add(cb.equal(root.get("orderType"), 1));
+            } else {
+                list.add(cb.equal(root.get("orderType"), 0));
+            }
             Predicate[] p = new Predicate[list.size()];
             return cb.and(list.toArray(p));
         };

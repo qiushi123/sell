@@ -126,7 +126,7 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         RunSchoolOrder order = service.findOne(orderid);
-        if (order==null) {
+        if (order == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         return ResultApiUtil.success(order);
@@ -138,7 +138,7 @@ public class SchoolOrderController {
     @PostMapping("/ruunerOrderList")
     public ResultApi<List<RunSchoolOrder>> runerOrderlist(
             @RequestParam("runnerOpenid") String runnerOpenid,
-            @RequestParam("isOk" ) boolean isOk,
+            @RequestParam("isOk") boolean isOk,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "200") int size) {
         if (StringUtils.isEmpty(runnerOpenid)) {
@@ -150,7 +150,7 @@ public class SchoolOrderController {
         Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
         PageRequest request = new PageRequest(page, size, sort);
 
-        Page<RunSchoolOrder> orderPage = service.findRunnerList(runnerOpenid,isOk, request);
+        Page<RunSchoolOrder> orderPage = service.findRunnerList(runnerOpenid, isOk, request);
 
         return ResultApiUtil.success(orderPage.getContent());
     }
@@ -158,10 +158,12 @@ public class SchoolOrderController {
     /**
      * 查询所有可以被抢的订单
      * 匹配城市，只展示跑腿员所在城市的订单
+     * orderType;//0代取快递，1代寄快递
      */
     @PostMapping("/canRobbedOrders")
     public ResultApi<List<RunSchoolOrder>> canRobbedOrders(
             @RequestParam("runnerOpenid") String runnerOpenid,
+            @RequestParam(value = "orderType", defaultValue = "0") Integer orderType,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "200") int size) {
         if (StringUtils.isEmpty(runnerOpenid)) {
@@ -178,7 +180,7 @@ public class SchoolOrderController {
         //按订单创建时间到排序，新订单在最前面
         Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
         PageRequest request = new PageRequest(page, size, sort);
-        Page<RunSchoolOrder> orderPage = service.canRobbedOrders(request);
+        Page<RunSchoolOrder> orderPage = service.canRobbedOrders(orderType,request);
 
         List<RunSchoolOrder> orderList = ProtectUserUtils.protectSchoolUserOrders(orderPage.getContent());
         return ResultApiUtil.success(orderList);
