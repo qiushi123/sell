@@ -35,7 +35,8 @@ public enum ResultEnum {
     USER_PASSWORD_ERROR(46, "密码错误"),
     USER_NO_AUTHORITY(47, "没有操作权限"),
     USER_NO(48, "会员不存在"),
-    USER_NO_HAVE(49, "用户不存在");
+    USER_NO_HAVE(49, "用户不存在"),
+    USER_NO_TRAINING(50, "没有培训过");
 
 
     private Integer code;

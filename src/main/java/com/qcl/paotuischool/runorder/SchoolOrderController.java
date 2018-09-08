@@ -2,10 +2,11 @@ package com.qcl.paotuischool.runorder;
 
 import com.qcl.api.ResultApi;
 import com.qcl.enums.OrderStatusEnum;
+import com.qcl.enums.OrderTypeEnum;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
-import com.qcl.paotuischool.bean.RunSchoolOrder;
 import com.qcl.paotuischool.bean.RunOrderForm2DTOConverter;
+import com.qcl.paotuischool.bean.RunSchoolOrder;
 import com.qcl.paotuischool.bean.SchoolRunner;
 import com.qcl.paotuischool.form.RobOrderForm;
 import com.qcl.paotuischool.form.RunSchoolOrderForm;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,15 +77,32 @@ public class SchoolOrderController {
                     , bindingResult.getFieldError().getDefaultMessage());
         }
 
+        //-1审核失败，1审核中的跑腿员，2审核通过普通跑腿员，3培训过可以寄件跑腿员
+        SchoolRunner schoolRunner = schoolerService.findOneOpenid(orderForm.getOpenid());
+        if (schoolRunner.getType() < 2) {
+            log.error("[查询可抢订单列表] 跑腿员没有审核通过");
+            throw new SellException(ResultEnum.USER_NO_AUTHORITY);
+        }
+
+
         RunSchoolOrder order = service.findOne(orderForm.getOrderid());
         if (order == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
+
+        //0代取快递，1代寄快递；只有培训过的跑腿员才可以抢寄件单
+        if (order.getOrderType() == OrderTypeEnum.SEND.getCode()) {
+            //-1审核失败，1审核中的跑腿员，2审核通过普通跑腿员，3培训过可以寄件跑腿员
+            if (schoolRunner.getType() < 3) {
+                log.error("[查询可抢订单列表] 跑腿员没有培训过");
+                throw new SellException(ResultEnum.USER_NO_TRAINING);
+            }
+        }
+
         //订单状态，-1取消订单，0新下单，1已抢单，2订单完成
         if (order.getOrderStatus() != 0) {
             throw new SellException(ResultEnum.ORDER_HAS_ROBBED);
         }
-
         order.setOrderStatus(OrderStatusEnum.HAS_BE_ROBBED.getCode());//设置已被抢单
         order.setRunnerId(orderForm.getOpenid());
         order.setRunnerName(orderForm.getName());
@@ -146,8 +165,13 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
 
-        //按订单创建时间到排序，新订单在最前面
-        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
+        //按订单创建时间到排序，新订单在最前面,加急排前
+        List<Sort.Order> list = new ArrayList<>(2);
+        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC, "isJiaJi");
+        Sort.Order order2 = new Sort.Order(Sort.Direction.DESC, "updateTime");
+        list.add(order1);
+        list.add(order2);
+        Sort sort = new Sort(list);
         PageRequest request = new PageRequest(page, size, sort);
 
         Page<RunSchoolOrder> orderPage = service.findRunnerList(runnerOpenid, isOk, request);
@@ -171,16 +195,22 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
         //只有注册了跑腿员，才能查看可以抢的订单
+        //-1审核失败，1审核中的跑腿员，2审核通过普通跑腿员，3培训过可以寄件跑腿员
         SchoolRunner schoolRunner = schoolerService.findOneOpenid(runnerOpenid);
-        if (schoolRunner.getType() != 2) {
+        if (schoolRunner.getType() < 2) {
             log.error("[查询可抢订单列表] 跑腿员没有审核通过");
             throw new SellException(ResultEnum.USER_NO_AUTHORITY);
         }
 
         //按订单创建时间到排序，新订单在最前面
-        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
+        List<Sort.Order> list = new ArrayList<>(2);
+        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC, "isJiaJi");
+        Sort.Order order2 = new Sort.Order(Sort.Direction.DESC, "updateTime");
+        list.add(order1);
+        list.add(order2);
+        Sort sort = new Sort(list);
         PageRequest request = new PageRequest(page, size, sort);
-        Page<RunSchoolOrder> orderPage = service.canRobbedOrders(orderType,request);
+        Page<RunSchoolOrder> orderPage = service.canRobbedOrders(orderType, request);
 
         List<RunSchoolOrder> orderList = ProtectUserUtils.protectSchoolUserOrders(orderPage.getContent());
         return ResultApiUtil.success(orderList);

@@ -2,6 +2,8 @@ package com.qcl.paotuischool.bean;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.qcl.enums.OrderStatusEnum;
+import com.qcl.enums.OrderTypeEnum;
+import com.qcl.enums.PayStatusEnum;
 import com.qcl.utils.serializer.Date2StringSerializer;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,7 +33,7 @@ public class RunSchoolOrder {
     @Id//主键
     private String orderId;
 
-    private Integer orderType;//0代取快递，1代寄快递
+
     //买家微信id
     private String openid;
     //必传
@@ -41,7 +43,7 @@ public class RunSchoolOrder {
     private String address;
     private String fromAddress; //去哪儿取和物品描述
     private String noteContent;// 取件短信
-    private Integer expressType;//物品类型，1小件，2中件，3大件，4超大件
+    private Integer expressType;//物品类型，1小件，2中件，3大件，4寄快递
     private Float totalMoney;//总费用
 
 
@@ -51,10 +53,14 @@ public class RunSchoolOrder {
     private String songdaTime;//期望送达时间
     private String beizhu;
 
-
+    //0代取快递，1代寄快递
+    private Integer orderType = OrderTypeEnum.TAKE.getCode();
     //订单状态，-1取消订单，0新下单，1已抢单，2已送达，3订单完成
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
+    //0等待支付，1支付完成
+    private Integer payStatus = PayStatusEnum.WAIT.getCode();
 
+    
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @JsonSerialize(using = Date2StringSerializer.class)//用于把date类型转换为string类型
