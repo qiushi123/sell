@@ -373,7 +373,7 @@ public class SchoolOrderController {
                 returnMap.put("signType", "MD5");
                 //这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
                 returnMap.put("timeStamp", timeStamp);
-                returnMap.put("orderid",orderid);
+//                returnMap.put("orderid",orderid);
                 //拼接签名需要的参数
                 //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
                 String paySign = PaymentKit.createSign(returnMap, partnerKey).toUpperCase();
