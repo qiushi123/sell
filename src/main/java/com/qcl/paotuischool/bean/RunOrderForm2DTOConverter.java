@@ -23,8 +23,8 @@ public class RunOrderForm2DTOConverter {
         orderDTO.setNoteContent(orderForm.getNoteContent());
         orderDTO.setExpressType(orderForm.getExpressType());
         orderDTO.setTotalMoney(orderForm.getTotalMoney());
-        orderDTO.setJiaJi(orderForm.isJiaJi());
-        orderDTO.setShangLou(orderForm.isShangLou());
+        orderDTO.setJiaJi(orderForm.getIsJiaJi() == 1);
+        orderDTO.setShangLou(orderForm.getIsShangLou()==1);
         orderDTO.setYundanhao(orderForm.getYundanhao());
         orderDTO.setSongdaTime(orderForm.getSongdaTime());
         orderDTO.setBeizhu(orderForm.getBeizhu());

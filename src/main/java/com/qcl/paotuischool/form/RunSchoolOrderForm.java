@@ -37,8 +37,8 @@ public class RunSchoolOrderForm {
     @NotNull(message = "代取费用不能为空")
     private Float totalMoney;
 
-    private boolean isJiaJi;//是否加急
-    private boolean isShangLou;//是否送上楼
+    private int isJiaJi;//是否加急 1ture 0false
+    private int isShangLou;//是否送上楼 1ture 0false
     private String yundanhao;//运单号
     private String songdaTime;//期望送达时间
     private String beizhu;

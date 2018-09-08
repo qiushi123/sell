@@ -61,6 +61,8 @@ public class SchoolOrderController {
         }
 
         RunSchoolOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
+        //        log.error("[创建订单] isJiaJi，orderForm={}", orderForm.getIsJiaJi());
+        //        log.error("[创建订单] isJiaJi，orderDTO={}", orderDTO.isJiaJi());
         RunSchoolOrder result = service.create(orderDTO);
         return ResultApiUtil.success(result);
     }
