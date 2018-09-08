@@ -6,6 +6,7 @@ import com.jpay.weixin.api.WxPayApi;
 import com.qcl.api.ResultApi;
 import com.qcl.enums.OrderStatusEnum;
 import com.qcl.enums.OrderTypeEnum;
+import com.qcl.enums.PayStatusEnum;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
 import com.qcl.paotuischool.bean.RunOrderForm2DTOConverter;
@@ -288,10 +289,11 @@ public class SchoolOrderController {
             HttpServletRequest request,
             @RequestParam("orderid") String orderid,
             @RequestParam("openid") String openid) {
-        String notify_url = "http://localhost:8080/runSchoolOrder/wxPay";
-        String partnerKey="Lizulizuqiuchunleiqiuchunlei0908";//partnerKey支付密码钥匙
+        String notify_url = "https://30paotui.com/runSchoolOrder/wxPaynotify";
+        //String notify_url = "http://localhost:8080/runSchoolOrder/wxPay";
+        String partnerKey = "Lizulizuqiuchunleiqiuchunlei0908";//partnerKey支付密码钥匙
 
-        //        String baseUrl = 'https://30paotui.com/runSchoolOrder/wxPay'
+
         AjaxJson aj = new AjaxJson();
         aj.setSuccess(false);
         if (StringUtils.isEmpty(orderid)) {
@@ -371,6 +373,7 @@ public class SchoolOrderController {
                 returnMap.put("signType", "MD5");
                 //这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
                 returnMap.put("timeStamp", timeStamp);
+                returnMap.put("orderid",orderid);
                 //拼接签名需要的参数
                 //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
                 String paySign = PaymentKit.createSign(returnMap, partnerKey).toUpperCase();
@@ -419,32 +422,34 @@ public class SchoolOrderController {
     *  微信支付给我们后台的回调
     * 比如上面配置的notify_url是http://系统的ip和端口/wxPay/notify
     * */
-    @RequestMapping("/wxPay")
-    public class WxPayController {
+    @RequestMapping("/wxPaynotify")
+    public void notify(HttpServletRequest request) {
+         String paternerKey = "Lizulizuqiuchunleiqiuchunlei0908";
 
-        private String paternerKey = "XXXXXX";
+        //获取所有的参数
+        StringBuffer sbf = new StringBuffer();
 
-        @RequestMapping("/notify")
-        public void notify(HttpServletRequest request) {
-            //获取所有的参数
-            StringBuffer sbf = new StringBuffer();
+        // 支付结果通用通知文档: https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+        String xmlMsg = HttpKit.readData(request);
+        System.out.println("支付通知=" + xmlMsg);
+        Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
+        String result_code = params.get("result_code");
 
-            // 支付结果通用通知文档: https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
-            String xmlMsg = HttpKit.readData(request);
-            System.out.println("支付通知=" + xmlMsg);
-            Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
-            String result_code = params.get("result_code");
-
-            //校验返回来的支付结果,根据已经配置的密钥
-            if (PaymentKit.verifyNotify(params, paternerKey)) {
-                //Constants.SUCCESS="SUCCESS"
-                if (("SUCCESS").equals(result_code)) {
-//                    校验通过.更改订单状态为已支付, 修改库存
-                    log.error("校验通过.更改订单状态为已支付, 修改库存");
-                }
+        log.error("校验通过.返回的参数={}",params);
+        //校验返回来的支付结果,根据已经配置的密钥
+        if (PaymentKit.verifyNotify(params, paternerKey)) {
+            //Constants.SUCCESS="SUCCESS"
+            if (("SUCCESS").equals(result_code)) {
+                //                    校验通过.更改订单状态为已支付, 修改库存
+                String orderid=params.get("orderid");
+                RunSchoolOrder myOrder = service.findOne(orderid);
+                myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
+                RunSchoolOrder result = service.create(myOrder);
+                log.error("校验通过.更改订单状态为已支付, 修改库存");
+                System.out.println("校验通过.更改订单状态为已支付, 修改库存");
             }
         }
-
     }
+
 
 }
