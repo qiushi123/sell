@@ -441,10 +441,11 @@ public class SchoolOrderController {
             //Constants.SUCCESS="SUCCESS"
             if (("SUCCESS").equals(result_code)) {
                 //                    校验通过.更改订单状态为已支付, 修改库存
-                String orderid=params.get("orderid");
+                String orderid=params.get("out_trade_no");
+                log.error("校验通过.返回的订单out_trade_no={}",orderid);
                 RunSchoolOrder myOrder = service.findOne(orderid);
                 myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
-                RunSchoolOrder result = service.create(myOrder);
+                service.create(myOrder);
                 log.error("校验通过.更改订单状态为已支付, 修改库存");
                 System.out.println("校验通过.更改订单状态为已支付, 修改库存");
             }
