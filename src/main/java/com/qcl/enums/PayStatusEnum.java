@@ -9,6 +9,7 @@ import lombok.Getter;
  */
 @Getter
 public enum PayStatusEnum {
+    REFUND(-1, "取消订单已退款"),
     WAIT(0, "等待支付"),
     SUCESS(1, "支付成功");
 

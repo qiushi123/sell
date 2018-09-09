@@ -55,9 +55,9 @@ public class RunSchoolOrder {
 
     //0代取快递，1代寄快递
     private Integer orderType = OrderTypeEnum.TAKE.getCode();
-    //订单状态，-1取消订单，0新下单，1已抢单，2已送达，3订单完成
+    //订单状态，-1取消订单并退款，0新下单，1已抢单，2已送达，3订单完成
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
-    //0等待支付，1支付完成
+    //-1已退款，0等待支付，1支付完成
     private Integer payStatus = PayStatusEnum.WAIT.getCode();
 
     

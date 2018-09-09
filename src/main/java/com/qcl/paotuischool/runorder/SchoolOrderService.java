@@ -85,6 +85,7 @@ public class SchoolOrderService {
     /**
      * 所有可以抢的订单
      * orderType;//0代取快递，1代寄快递
+     * payStatus=1支付成功
      *
      * @param pageable
      * @return
@@ -94,6 +95,7 @@ public class SchoolOrderService {
         Specification<RunSchoolOrder> spec = (Specification<RunSchoolOrder>) (root, query, cb) -> {
             List<Predicate> list = new ArrayList<Predicate>();
             list.add(cb.equal(root.get("orderStatus"), 0));
+            list.add(cb.equal(root.get("payStatus"), 1));
             if (orderType == 1) {
                 list.add(cb.equal(root.get("orderType"), 1));
             } else {

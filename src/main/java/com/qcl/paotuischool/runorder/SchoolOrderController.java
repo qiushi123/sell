@@ -70,6 +70,10 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode()
                     , bindingResult.getFieldError().getDefaultMessage());
         }
+        //金额必须大于0
+        if (orderForm.getTotalMoney() == null || orderForm.getTotalMoney() <= 0) {
+            throw new SellException(ResultEnum.ORDER_MONEY_ERROR);
+        }
 
         RunSchoolOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
         //        log.error("[创建订单] isJiaJi，orderForm={}", orderForm.getIsJiaJi());
@@ -115,6 +119,10 @@ public class SchoolOrderController {
         //订单状态，-1取消订单，0新下单，1已抢单，2订单完成
         if (order.getOrderStatus() != 0) {
             throw new SellException(ResultEnum.ORDER_HAS_ROBBED);
+        }
+        //未支付的订单不能抢
+        if (order.getPayStatus() != 1) {
+            throw new SellException(ResultEnum.ORDER_HAS_NOPAY);
         }
         order.setOrderStatus(OrderStatusEnum.HAS_BE_ROBBED.getCode());//设置已被抢单
         order.setRunnerId(orderForm.getOpenid());
@@ -248,7 +256,7 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
 
-        //订单状态，-1取消订单，0新下单，1已抢单，2已送达，3订单完成
+        //订单状态，-1取消订单并退款，0新下单，1已抢单，2已送达，3订单完成
         RunSchoolOrder order = service.findOne(orderid);
         if (order == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
@@ -258,12 +266,14 @@ public class SchoolOrderController {
                 log.error("[修改订单] 您没有操作权限");
                 throw new SellException(ResultEnum.USER_NO_AUTHORITY);
             }
-        } else if (orderType == OrderStatusEnum.CANCEL.getCode()
-                || orderType == OrderStatusEnum.FINISHED.getCode()) {//只有用户才能取消或者确认订单
+        } else if (orderType == OrderStatusEnum.FINISHED.getCode()) {//只有用户才能确认订单
             if (!openid.equals(order.getOpenid())) {//只有抢单的跑腿员才能送达
                 log.error("[修改订单] 您没有操作权限");
                 throw new SellException(ResultEnum.USER_NO_AUTHORITY);
             }
+        } else if (orderType == OrderStatusEnum.CANCEL.getCode()) {//只有管理员才能取消订单并退款
+            // TODO: 2018/9/9 待开发，管理员取消订单并退款功能
+
         }
 
 
@@ -373,7 +383,7 @@ public class SchoolOrderController {
                 returnMap.put("signType", "MD5");
                 //这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
                 returnMap.put("timeStamp", timeStamp);
-//                returnMap.put("orderid",orderid);
+                //                returnMap.put("orderid",orderid);
                 //拼接签名需要的参数
                 //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
                 String paySign = PaymentKit.createSign(returnMap, partnerKey).toUpperCase();
@@ -424,7 +434,7 @@ public class SchoolOrderController {
     * */
     @RequestMapping("/wxPaynotify")
     public void notify(HttpServletRequest request) {
-         String paternerKey = "Lizulizuqiuchunleiqiuchunlei0908";
+        String paternerKey = "Lizulizuqiuchunleiqiuchunlei0908";
 
         //获取所有的参数
         StringBuffer sbf = new StringBuffer();
@@ -435,14 +445,14 @@ public class SchoolOrderController {
         Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
         String result_code = params.get("result_code");
 
-        log.error("校验通过.返回的参数={}",params);
+        log.error("校验通过.返回的参数={}", params);
         //校验返回来的支付结果,根据已经配置的密钥
         if (PaymentKit.verifyNotify(params, paternerKey)) {
             //Constants.SUCCESS="SUCCESS"
             if (("SUCCESS").equals(result_code)) {
                 //                    校验通过.更改订单状态为已支付, 修改库存
-                String orderid=params.get("out_trade_no");
-                log.error("校验通过.返回的订单out_trade_no={}",orderid);
+                String orderid = params.get("out_trade_no");
+                log.error("校验通过.返回的订单out_trade_no={}", orderid);
                 RunSchoolOrder myOrder = service.findOne(orderid);
                 myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
                 service.create(myOrder);
