@@ -21,4 +21,5 @@ public class SchoolRunner {
     private String address;//常住地址
     private int type;//-1审核失败，1审核中的跑腿员，2审核通过普通跑腿员，3培训过可以寄件跑腿员
     private String refuseDesc;//审核失败时的文案：如果是审核失败请给出失败原因
+    private String formIds;//保存跑腿员的formid数组，用来做小程序推送用
 }

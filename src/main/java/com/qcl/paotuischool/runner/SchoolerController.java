@@ -6,14 +6,19 @@ import com.qcl.exception.SellException;
 import com.qcl.paotuischool.bean.SchoolRunner;
 import com.qcl.paotuischool.form.RunnerForm;
 import com.qcl.utils.ResultApiUtil;
+import com.qcl.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -57,7 +62,6 @@ public class SchoolerController {
         }
 
 
-
         SchoolRunner bean = new SchoolRunner();
         bean.setOpenId(runnerForm.getOpenid());
         bean.setName(runnerForm.getName());
@@ -70,5 +74,36 @@ public class SchoolerController {
         return ResultApiUtil.success(bean1);
     }
 
+
+    /**
+     * 保存formid，将来做小程序推送用
+     */
+    @PostMapping("/formid")
+    public ResultApi formid(
+            @RequestParam("openid") String openid,
+            @RequestParam("formid") String formid) {
+        if (StringUtils.isEmpty(openid) || StringUtils.isEmpty(formid)) {
+            log.error("[查询订单列表] openid为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        SchoolRunner runner = service.findOneOpenid(openid);
+        if (runner.getType() < 2) {
+            log.error("[推送] 只收集跑腿员的formid");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+        String formIds = runner.getFormIds();
+        List list = new ArrayList<>();
+        if (StringUtils.isEmpty(formIds)) {
+            list.add(formid);
+        } else {
+            list = Utils.String2List(formIds);
+            list.add(formid);
+        }
+        runner.setFormIds(Utils.List2String(list));
+
+        SchoolRunner bean1 = service.save(runner);
+        return ResultApiUtil.success(bean1);
+    }
 
 }

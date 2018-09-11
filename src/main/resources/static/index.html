@@ -12,8 +12,8 @@
     <!-- 直接把你的选定的图片的地址放进来就行了，但是图片的格式转换成.ico -->
     <!-- <link rel="icon" href="" type="image/x-icon"> -->
     <title>微信小程序小游戏学习</title>
-    <meta name="keywords" content="零基础入门微信小程序"/>
-    <meta name="description" content="零基础入门微信小程序"/>
+    <meta name="keywords" content="零基础30天入门微信小程序"/>
+    <meta name="description" content="零基础30天入门微信小程序"/>
     <!-- 下面的引入的是你更改后的css文件，不用@import的方式 -->
     <!-- <link rel="stylesheet" href="static/css/index.css"> -->
     <style>
@@ -182,9 +182,9 @@
 </head>
 <body>
 <div id="app">
-    <div id="showImg">
+    <!--<div id="showImg">-->
 
-    </div>
+    <!--</div>-->
     <div class="smallRutine">
         <h1>30天零基础实战入门小程序系列</h1>
         <!--小程序自学文章列表-->
@@ -192,40 +192,7 @@
             <ul id="ml"></ul>
         </div>
     </div>
-    <div class="game">
-        <h1>小游戏，轻松一下</h1>
-        <div class="gameList">
-            <div class="div2048">
 
-                <a class="a2048" href="static/2048/2048.html">
-                    <span>2048小游戏</span>
-                    <img class="img" src="static/images/2048.png">
-                </a>
-            </div>
-            <div class="div2048">
-
-                <a class="a2048" href="static/shenjingmao/shenjingmao.html">
-                    <span>围住神经猫小游戏</span>
-                    <img class="img" src="static/images/shenjingmao.png">
-                </a>
-            </div>
-            <div class="div2048">
-
-                <a class="a2048" href="static/xiaoniao/xiaoniao.html">
-                    <span>像素小鸟小游戏</span>
-                    <img class="img" src="static/images/xiaoniao.png">
-                </a>
-            </div>
-            <div class="div2048">
-
-                <a class="a2048" href="static/shuxue/shuxue.html">
-                    <span>60秒趣味数学大比拼</span>
-                    <img class="img" src="static/images/shuxue.png">
-                </a>
-            </div>
-        </div>
-
-    </div>
 
 </div>
 <!--获取当前ip和城市-->
@@ -262,12 +229,12 @@
         var bIsAndroid = sUserAgent.match(/android/i) == "android";
         var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
         var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
-            //跳转移动端页面
-            $('#showImg').html('<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525588054&di=816a9c2aba1a2bc7de102246383e5930&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.christiantimes.cn%2Fassets%2Fcache%2F620x418%2Fassets%2Fmedia%2Fpost%2F201710%2F24989%2Fwww.christiantimes.cn-500416617.jpg" />')
-        } else {
-            $('#showImg').html('<img src="./static/images/study.jpg" />')
-        }
+//        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+//            //跳转移动端页面
+//            $('#showImg').html('<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525588054&di=816a9c2aba1a2bc7de102246383e5930&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.christiantimes.cn%2Fassets%2Fcache%2F620x418%2Fassets%2Fmedia%2Fpost%2F201710%2F24989%2Fwww.christiantimes.cn-500416617.jpg" />')
+//        } else {
+//            $('#showImg').html('<img src="./static/images/study.jpg" />')
+//        }
     }
     browserRedirect();
 

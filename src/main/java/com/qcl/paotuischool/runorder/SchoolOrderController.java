@@ -15,7 +15,8 @@ import com.qcl.paotuischool.bean.SchoolRunner;
 import com.qcl.paotuischool.form.RobOrderForm;
 import com.qcl.paotuischool.form.RunSchoolOrderForm;
 import com.qcl.paotuischool.runner.SchoolerService;
-import com.qcl.paotuischool.wechatpay.AjaxJson;
+import com.qcl.paotuischool.wechat.AjaxJson;
+import com.qcl.paotuischool.wechat.WxPushService;
 import com.qcl.utils.ProtectUserUtils;
 import com.qcl.utils.ResultApiUtil;
 
@@ -61,6 +62,10 @@ public class SchoolOrderController {
     @Autowired
     private SchoolerService schoolerService;
 
+    //微信推送的服务
+    @Autowired
+    private WxPushService wxPushService;
+
     //创建单个订单
     @PostMapping("/create")
     public ResultApi<Map<String, String>> create(@Valid RunSchoolOrderForm orderForm,
@@ -76,8 +81,6 @@ public class SchoolOrderController {
         }
 
         RunSchoolOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
-        //        log.error("[创建订单] isJiaJi，orderForm={}", orderForm.getIsJiaJi());
-        //        log.error("[创建订单] isJiaJi，orderDTO={}", orderDTO.isJiaJi());
         RunSchoolOrder result = service.create(orderDTO);
         return ResultApiUtil.success(result);
     }
@@ -458,6 +461,9 @@ public class SchoolOrderController {
                 service.create(myOrder);
                 log.error("校验通过.更改订单状态为已支付, 修改库存");
                 System.out.println("校验通过.更改订单状态为已支付, 修改库存");
+                // TODO: 2018/9/11  先在订单创建成功时推送消息
+                log.error("订单创建成功，推送服务");
+                wxPushService.pushAll(myOrder);
             }
         }
     }

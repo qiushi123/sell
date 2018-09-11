@@ -1,4 +1,4 @@
-package com.qcl.paotuischool.wechatpay;
+package com.qcl.paotuischool.wechat;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentMap;
