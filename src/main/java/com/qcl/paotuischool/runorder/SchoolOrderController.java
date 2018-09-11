@@ -461,7 +461,7 @@ public class SchoolOrderController {
                 service.create(myOrder);
                 log.error("校验通过.更改订单状态为已支付, 修改库存");
                 System.out.println("校验通过.更改订单状态为已支付, 修改库存");
-                // TODO: 2018/9/11  先在订单创建成功时推送消息
+
                 log.error("订单创建成功，推送服务");
                 wxPushService.pushAll(myOrder);
             }
