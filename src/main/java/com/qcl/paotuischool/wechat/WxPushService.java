@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,10 +55,10 @@ public class WxPushService {
             runner.setFormIds(Utils.List2String(formIdList));
             schoolerService.save(runner);
 
-            CompletableFuture.runAsync(() -> {
-                //需要异步处理的方法
-                pushOneUser(runner.getOpenId(), formid, schoolOrder);
-            });
+            //            CompletableFuture.runAsync(() -> {
+            //需要异步处理的方法
+            pushOneUser(runner.getOpenId(), formid, schoolOrder);
+            //            });
 
         }
 
@@ -95,7 +94,6 @@ public class WxPushService {
         m.put("keyword1", keyword1);
 
         TemplateData keyword2 = new TemplateData();
-        keyword2.setColor("#FF3030");
         keyword2.setValue(schoolOrder.getTotalMoney() + "元");
         m.put("keyword2", keyword2);
         wxMssVo.setData(m);

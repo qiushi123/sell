@@ -36,12 +36,14 @@ public class RunSchoolOrder {
 
     //买家微信id
     private String openid;
+    //支付时，微信返回的用于推送的id，7天内可以推送3次
+    private String prepay_id;
     //必传
     private String school;//那个学校
     private String name;
     private String phone;
     private String address;
-    private String fromAddress; //去哪儿取和物品描述
+    private String fromAddress; //去那家快递公司取，如果是寄就是上门地址
     private String noteContent;// 取件短信
     private Integer expressType;//物品类型，1小件，2中件，3大件，4寄快递
     private Float totalMoney;//总费用
@@ -55,12 +57,14 @@ public class RunSchoolOrder {
 
     //0代取快递，1代寄快递
     private Integer orderType = OrderTypeEnum.TAKE.getCode();
-    //订单状态，-1取消订单并退款，0新下单，1已抢单，2已送达，3订单完成
+    private String company;//用那家快递公司寄件
+
+    //订单状态 -1取消订单，0新下单待抢单，1已被抢单，2已取到，3已送达，4客户确认收货
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
-    //-1已退款，0等待支付，1支付完成
+    //支付状态 -2已退款，-1已申请退款，0等待支付，1支付完成
     private Integer payStatus = PayStatusEnum.WAIT.getCode();
 
-    
+
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @JsonSerialize(using = Date2StringSerializer.class)//用于把date类型转换为string类型

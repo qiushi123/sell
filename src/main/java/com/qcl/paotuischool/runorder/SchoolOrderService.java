@@ -57,19 +57,19 @@ public class SchoolOrderService {
 
     /**
      * 某一个跑腿员抢的所有订单
-     *
-     * @param runnerOpenid
-     * @param isOk         :是否完成订单
-     * @return
+     * runnerOpenid
+     * runnerOrderType: 0新抢到待取件，1已取件，2已送达
      */
-    public Page<RunSchoolOrder> findRunnerList(String runnerOpenid, boolean isOk, PageRequest
+    public Page<RunSchoolOrder> findRunnerList(String runnerOpenid, int runnerOrderType, PageRequest
             pageable) {
-        //1已抢单，2已送达，3订单完成
+        //订单状态 -1取消订单，0新下单待抢单，1已被抢单，2已取到，3已送达，4客户确认收货
         Specification<RunSchoolOrder> spec = (Specification<RunSchoolOrder>) (root, query, cb) -> {
             List<Predicate> list = new ArrayList<Predicate>();
-            if (isOk) {
-                list.add(cb.greaterThanOrEqualTo(root.get("orderStatus"), 2));//大于等于2
-            } else {
+            if (runnerOrderType == 2) {//已送达
+                list.add(cb.greaterThanOrEqualTo(root.get("orderStatus"), 3));//大于等于3代表已送达
+            } else if (runnerOrderType == 1) {//已取到件
+                list.add(cb.equal(root.get("orderStatus"), 2));
+            } else {//新抢到待取件
                 list.add(cb.equal(root.get("orderStatus"), 1));
             }
             list.add(cb.equal(root.get("runnerId"), runnerOpenid));

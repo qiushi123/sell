@@ -24,10 +24,11 @@ public class RunOrderForm2DTOConverter {
         orderDTO.setExpressType(orderForm.getExpressType());
         orderDTO.setTotalMoney(orderForm.getTotalMoney());
         orderDTO.setJiaJi(orderForm.getIsJiaJi() == 1);
-        orderDTO.setShangLou(orderForm.getIsShangLou()==1);
+        orderDTO.setShangLou(orderForm.getIsShangLou() == 1);
         orderDTO.setYundanhao(orderForm.getYundanhao());
         orderDTO.setSongdaTime(orderForm.getSongdaTime());
         orderDTO.setBeizhu(orderForm.getBeizhu());
+        orderDTO.setCompany(orderForm.getCompany());//新加快递公司
 
         return orderDTO;
     }

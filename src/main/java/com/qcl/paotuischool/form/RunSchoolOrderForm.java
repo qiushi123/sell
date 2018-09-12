@@ -27,7 +27,7 @@ public class RunSchoolOrderForm {
     @NotEmpty(message = "送到哪儿不能为空")
     private String address;
     @NotEmpty(message = "请选择校区")
-    private String school;//城市很重要，跑腿员只能看到同城市的订单
+    private String school;
     @NotEmpty(message = "去哪儿取和物品描述不能为空")
     private String fromAddress;
     @NotEmpty(message = "请复制取件短信")
@@ -42,4 +42,5 @@ public class RunSchoolOrderForm {
     private String yundanhao;//运单号
     private String songdaTime;//期望送达时间
     private String beizhu;
+    private String company;//用户选择的快递公司
 }
