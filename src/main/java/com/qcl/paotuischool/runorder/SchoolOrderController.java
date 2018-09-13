@@ -237,6 +237,7 @@ public class SchoolOrderController {
     @PostMapping("/changeOrder")
     public ResultApi changeOrder(
             @RequestParam("orderid") String orderid,
+            @RequestParam("yundanhao") String yundanhao,
             @RequestParam("openid") String openid,
             @RequestParam("orderStatus") Integer orderStatus) {
         if (StringUtils.isEmpty(orderid)) {
@@ -266,6 +267,12 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.USER_NO_AUTHORITY);
         }
 
+        log.error("[填写运单号] yundanhao={}",yundanhao);
+        //寄件单，跑腿员确认发件时需要填写发件运单号
+        if (!StringUtils.isEmpty(yundanhao)&&orderStatus==3&&order.getOrderType()==1) {
+            order.setYundanhao(yundanhao);
+            log.error("[填写运单号] 不为空，并改下成功运单号");
+        }
 
         order.setOrderStatus(orderStatus);
         RunSchoolOrder runSchoolOrder = service.create(order);
