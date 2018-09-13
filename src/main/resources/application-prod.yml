@@ -4,6 +4,8 @@ project:
 spring:
   #数据库相关配置
   datasource:
+    #解决阿里云java虚拟机8小时时差问题呢
+    destroy-method: false
     driver-class-name: com.mysql.jdbc.Driver
     #如果对url进行加密，还会出现8小时时差问题，所以这里url不加密
     #url: ENC(dpf1LW8RN2RxMEMtrzBwjMQkqe0OEDbW21Mt8/ZSfsmMuxx7H0U1LBR8lvSMF3vS38w7le+a0xDJLmOaLD3FYe3lOjOCJMfQRnlJ5vEFalPxk8BDJ61sD80S2FU95kjSLTMDqzw/2fqJoq1LEGvuHA==)
