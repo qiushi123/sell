@@ -46,11 +46,11 @@ public class WxPushService {
         for (SchoolRunner runner : runnerList) {
             String formIds = runner.getFormIds();
             List formIdList = Utils.String2List(formIds);
-            log.error("[推送服务]推送 runner={}",runner);
+            log.error("[推送服务]推送 runner={}", runner);
             if (formIdList == null || formIdList.size() < 1) {
                 return;
             }
-            log.error("[推送服务]推送 formIdList={}",formIdList);
+            log.error("[推送服务]推送 formIdList={}", formIdList);
             //formId用一个减一个
             String formid = (String) formIdList.get(0);
             formIdList.remove(0);
@@ -92,12 +92,12 @@ public class WxPushService {
         //keyword1：订单类型，keyword2：下单金额，keyword3：配送地址，keyword4：取件地址，keyword5备注
         TemplateData keyword1 = new TemplateData();
         keyword1.setValue("新下单待抢单");
-//        keyword1.setColor("#FF4500");//微信废弃了
+        //        keyword1.setColor("#FF4500");//微信废弃了
         m.put("keyword1", keyword1);
 
         TemplateData keyword2 = new TemplateData();
         keyword2.setValue(schoolOrder.getTotalMoney() + "元");
-//        keyword2.setColor("#FF4500");
+        //        keyword2.setColor("#FF4500");
         m.put("keyword2", keyword2);
         wxMssVo.setData(m);
 
@@ -106,8 +106,15 @@ public class WxPushService {
         m.put("keyword3", keyword3);
         wxMssVo.setData(m);
 
+        //取件地址
+        String fromAddress = "";
+        if (schoolOrder.getOrderType() == 1) {//代寄
+            fromAddress = "代寄快递，点击查看地址";
+        } else {//代取
+            fromAddress = schoolOrder.getFromAddress();
+        }
         TemplateData keyword4 = new TemplateData();
-        keyword4.setValue(schoolOrder.getSchool());
+        keyword4.setValue(fromAddress);
         m.put("keyword4", keyword4);
         wxMssVo.setData(m);
 

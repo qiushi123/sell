@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -181,6 +182,20 @@ public class WxPayService {
         Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
         String result_code = params.get("result_code");
 
+        /*
+        支付成功返回的参数如下
+                {transaction_id=4200000198201809145452904734,
+                nonce_str=6591df3155154cf3853c8dec89c07402,
+                bank_type=CFT, openid=oWcTi5C_KqPZ9lLb44GtY0q__avg,
+                sign=DCA1807E91725C9DA250FE3960049988,
+                fee_type=CNY, mch_id=1514204271,
+                cash_fee=200,
+                out_trade_no=1536908099894869273,//订单id
+                appid=wx3a9741a27fe04fd3, total_fee=200,
+                trade_type=JSAPI, result_code=SUCCESS,
+                time_end=20180914145507, is_subscribe=N,
+                return_code=SUCCESS}*/
+
         log.error("校验通过.返回的参数={}", params);
         //校验返回来的支付结果,根据已经配置的密钥
         if (PaymentKit.verifyNotify(params, ConstantUtils.WXPAY_PARTNERKEY)) {
@@ -188,15 +203,16 @@ public class WxPayService {
             if (("SUCCESS").equals(result_code)) {
                 //                    校验通过.更改订单状态为已支付, 修改库存
                 String orderid = params.get("out_trade_no");
-                log.error("校验通过.返回的订单out_trade_no={}", orderid);
                 RunSchoolOrder myOrder = service.findOne(orderid);
-                myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
-                service.create(myOrder);
-                log.error("校验通过.更改订单状态为已支付, 修改库存");
-                System.out.println("校验通过.更改订单状态为已支付, 修改库存");
+                //这里因为微信支付成功后，会有多次回调，为了避免发送多条推送，这里做下过滤
+                if (!Objects.equals(myOrder.getPayStatus(), PayStatusEnum.SUCESS.getCode())) {
+                    myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
+                    service.create(myOrder);
+                    log.error("[支付成功，修改支付状态]校验通过.更改订单状态为已支付, 修改库存");
+                    log.error("[推送服务]订单创建成功，推送服务");
+                    wxPushService.pushAll(myOrder);
+                }
 
-                log.error("订单创建成功，推送服务");
-                wxPushService.pushAll(myOrder);
             }
         }
     }
