@@ -2,8 +2,6 @@ package com.qcl.wbspoor;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -21,13 +19,19 @@ public class SpoorForm {
     @NotEmpty(message = "所在城市必传")
     private String city;//所在城市
 
-    private Date startTime;//开始时间
+    private String startTime;//开始时间
 
-    private Date endTime;//结束时间
+    private String endTime;//结束时间
+
+    private Float startLatitude;
+    private Float startlongitude;
+
+    private Float endLatitude;
+    private Float endlongitude;
 
     private String lenght;//长度
+    private String duration;//时长
 
-    private String message;//附加信息（文字描述）
 
 
 }

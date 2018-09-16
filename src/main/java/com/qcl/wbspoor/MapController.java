@@ -8,6 +8,7 @@ import com.qcl.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,11 +57,31 @@ public class MapController {
         bean.setUserid(spoorForm.getUserid());
         bean.setStartTime(spoorForm.getStartTime());
         bean.setEndTime(spoorForm.getEndTime());
-        bean.setDuration(Utils.getDatePoor(spoorForm.getEndTime(), spoorForm.getStartTime()));
+        bean.setDuration(spoorForm.getDuration());
         bean.setLenght(spoorForm.getLenght());
         bean.setCity(spoorForm.getCity());
-        bean.setMessage(spoorForm.getMessage());
         bean.setYear(Utils.getSysYear());
+        bean.setStartLatitude(spoorForm.getStartLatitude());
+        bean.setStartlongitude(spoorForm.getStartlongitude());
+        bean.setEndLatitude(spoorForm.getEndLatitude());
+        bean.setEndlongitude(spoorForm.getEndlongitude());
+
+        //查询条件构造
+        Specification<Spoor> spec = (Specification<Spoor>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+            list.add(cb.equal(root.get("userid"), spoorForm.getUserid()));
+            list.add(cb.equal(root.get("city"), spoorForm.getCity()));
+
+            Predicate[] p = new Predicate[list.size()];
+            return cb.and(list.toArray(p));
+        };
+        List<Spoor> spoorList = repository.findAll(spec);
+        if (spoorList.size() < 1) {
+            bean.setMessage("第1次来" + spoorForm.getCity());
+        } else {
+            bean.setMessage("第" + (spoorList.size() + 1) + "次来" + spoorForm.getCity());
+        }
+
         Spoor bean1 = repository.save(bean);
         return ResultApiUtil.success(bean1);
     }
@@ -86,5 +107,30 @@ public class MapController {
         return ResultApiUtil.success(repository.findAll(spec));
     }
 
+
+    /*
+    * 用户相关
+    * */
+    @Autowired
+    private RepositoryUser repositoryUser;
+
+
+    @GetMapping("/getUser")
+    public ResultApi getUser(@RequestParam(name = "openid") String openid) {
+        if (StringUtils.isEmpty(openid)) {
+            throw new SellException(ResultEnum.USER_NO_HAVE);
+        }
+        return ResultApiUtil.success(repositoryUser.findByOpenid(openid));
+    }
+
+    @PostMapping("/saveUser")
+    public ResultApi saveUser(@RequestParam(name = "openid") String openid) {
+        if (StringUtils.isEmpty(openid)) {
+            throw new SellException(ResultEnum.USER_NO_HAVE);
+        }
+        SpoorUser user = new SpoorUser();
+        user.setOpenid(openid);
+        return ResultApiUtil.success(repositoryUser.save(user));
+    }
 
 }
