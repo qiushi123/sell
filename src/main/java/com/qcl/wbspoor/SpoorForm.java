@@ -32,6 +32,7 @@ public class SpoorForm {
     private String lenght;//长度
     private String duration;//时长
 
+    private String message = "";//附加信息（文字描述）
 
 
 }

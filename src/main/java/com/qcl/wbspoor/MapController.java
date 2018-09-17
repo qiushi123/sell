@@ -66,21 +66,7 @@ public class MapController {
         bean.setEndLatitude(spoorForm.getEndLatitude());
         bean.setEndlongitude(spoorForm.getEndlongitude());
 
-        //查询条件构造
-        Specification<Spoor> spec = (Specification<Spoor>) (root, query, cb) -> {
-            List<Predicate> list = new ArrayList<>();
-            list.add(cb.equal(root.get("userid"), spoorForm.getUserid()));
-            list.add(cb.equal(root.get("city"), spoorForm.getCity()));
-
-            Predicate[] p = new Predicate[list.size()];
-            return cb.and(list.toArray(p));
-        };
-        List<Spoor> spoorList = repository.findAll(spec);
-        if (spoorList.size() < 1) {
-            bean.setMessage("第1次来" + spoorForm.getCity());
-        } else {
-            bean.setMessage("第" + (spoorList.size() + 1) + "次来" + spoorForm.getCity());
-        }
+        bean.setMessage(spoorForm.getMessage());
 
         Spoor bean1 = repository.save(bean);
         return ResultApiUtil.success(bean1);
