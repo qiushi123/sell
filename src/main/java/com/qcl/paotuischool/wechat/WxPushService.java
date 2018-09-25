@@ -52,8 +52,12 @@ public class WxPushService {
             }
             log.error("[推送服务]推送 formIdList={}", formIdList);
             //formId用一个减一个
-            String formid = (String) formIdList.get(0);
-            formIdList.remove(0);
+            int lastIndex=formIdList.size()-1;
+            if (lastIndex<0) {
+                return;
+            }
+            String formid = (String) formIdList.get(lastIndex);
+            formIdList.remove(lastIndex);
             //            CompletableFuture.runAsync(() -> {
             //需要异步处理的方法
             pushOneUser(runner.getOpenId(), formid, schoolOrder);
