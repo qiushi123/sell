@@ -81,8 +81,7 @@ public class BangPaiOrderController {
         BangPaiOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
         BangPaiOrder result = service.create(orderDTO);
 
-        // TODO: 2018/9/27 创建完订单时推送
-        wxPushService.pushAllRunner("wx3aaec846b7adfb6b");
+        //        wxPushService.pushAllRunner("wx3aaec846b7adfb6b");
         return ResultApiUtil.success(result);
     }
 
