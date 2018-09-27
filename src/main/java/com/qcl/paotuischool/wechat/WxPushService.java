@@ -5,7 +5,7 @@ import com.qcl.paotuischool.bean.RunSchoolOrder;
 import com.qcl.paotuischool.bean.SchoolRunner;
 import com.qcl.paotuischool.runner.SchoolerService;
 import com.qcl.userwechat.bean.AccessToken;
-import com.qcl.utils.ConstantUtils;
+import com.qcl.global.ConstantUtils;
 import com.qcl.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;

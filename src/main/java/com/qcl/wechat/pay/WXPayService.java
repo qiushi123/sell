@@ -1,23 +1,17 @@
-package com.qcl.paotuischool.wechat;
+package com.qcl.wechat.pay;
 
 import com.jpay.ext.kit.HttpKit;
 import com.jpay.ext.kit.PaymentKit;
 import com.jpay.weixin.api.WxPayApi;
-import com.qcl.enums.PayStatusEnum;
 import com.qcl.enums.ResultEnum;
 import com.qcl.exception.SellException;
-import com.qcl.paotuischool.bean.RunSchoolOrder;
-import com.qcl.paotuischool.runorder.SchoolOrderService;
-import com.qcl.global.ConstantUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -32,48 +26,40 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class WxPayService {
+public class WXPayService {
 
-    @Autowired
-    private SchoolOrderService service;//订单的服务
 
-    @Autowired
-    private WxPushService wxPushService;//微信推送的服务
+    private PayOrderBean orderBean = null;
 
     /**
      * 小程序微信支付的第一步,统一下单,创建支付订单
      *
      * @return
      */
-    public AjaxJson createPayOrder(
-            HttpServletRequest request,
-            String orderid, String openid) {
+    public AjaxJson createPayOrder(HttpServletRequest request, PayOrderBean orderBean) {
 
         AjaxJson aj = new AjaxJson();
         aj.setSuccess(false);
-        if (StringUtils.isEmpty(orderid)) {
-            log.error("[微信支付创建订单] 订单号不能为空");
+
+        //这里调用service层根据订单id获取订单数据,这里省略不表
+        if (orderBean == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        if (StringUtils.isEmpty(openid)) {
+
+        if (StringUtils.isEmpty(orderBean.getOpenid())) {
             log.error("[微信支付创建订单] openid不能为空");
             throw new SellException(ResultEnum.USER_NO_LOGIN);
         }
-        //这里调用service层根据订单id获取订单数据,这里省略不表
-        RunSchoolOrder myOrder = service.findOne(orderid);
-        if (myOrder == null) {
-            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
-        }
+        this.orderBean = orderBean;
 
         String return_msg = "创建微信订单失败";
 
         try {
             //支付金额 **金额不能有小数点,单位是分!!**
-            BigDecimal price = new BigDecimal(myOrder.getTotalMoney().toString());
+            BigDecimal price = new BigDecimal(orderBean.getTotalMoney().toString());
             BigDecimal beishu = new BigDecimal("100");
             BigDecimal priceFee = price.multiply(beishu);
-            //商家订单号
-            String orderNo = myOrder.getOrderId();
+
 
             //创建 时间戳
             String timeStamp = Long.valueOf(System.currentTimeMillis()).toString();
@@ -81,31 +67,31 @@ public class WxPayService {
             UUID uuid = UUID.randomUUID();
             String nonceStr = uuid.toString().replaceAll("-", "");
             //商品描述
-            String body = "找我啊校园跑腿-支付订单";
+            String body = orderBean.getOrderType();
             //创建hashmap(用户获得签名)
             SortedMap<String, String> paraMap = new TreeMap<>();
             //设置请求参数(小程序ID)
-            paraMap.put("appid", ConstantUtils.SCHOOL_APPID);
+            paraMap.put("appid", orderBean.getAppid());
             //设置请求参数(商户号)
-            paraMap.put("mch_id", ConstantUtils.WXPAY_MCH_ID);
+            paraMap.put("mch_id", orderBean.getMch_id());
             //设置请求参数(随机字符串)
             paraMap.put("nonce_str", nonceStr);
             //设置请求参数(商品描述)
             paraMap.put("body", body);
             //设置请求参数(商户订单号)
-            paraMap.put("out_trade_no", orderNo);
+            paraMap.put("out_trade_no", orderBean.getOrderId());//商家订单号
             //设置请求参数(总金额)
             paraMap.put("total_fee", priceFee.toBigInteger().toString());
             //设置请求参数(终端IP) 如果是springmvc,或者能获取到request的servlet,用下面这种
             paraMap.put("spbill_create_ip", request.getRemoteAddr());
             //设置请求参数(通知地址)
-            paraMap.put("notify_url", ConstantUtils.WXPAY_NOTIFY_URL);
+            paraMap.put("notify_url", orderBean.getNotify_url());
             //设置请求参数(交易类型)
             paraMap.put("trade_type", String.valueOf(WxPayApi.TradeType.JSAPI));
             //设置请求参数(openid)(在接口文档中 该参数 是否必填项 但是一定要注意 如果交易类型设置成'JSAPI'则必须传入openid)
-            paraMap.put("openid", openid);
+            paraMap.put("openid", orderBean.getOpenid());
             //MD5运算生成签名，这里是第一次签名，用于调用统一下单接口
-            String sign = PaymentKit.createSign(paraMap, ConstantUtils.WXPAY_PARTNERKEY);
+            String sign = PaymentKit.createSign(paraMap, orderBean.getPaySign());
 
             paraMap.put("sign", sign);
             //统一下单,向微信api发送数据
@@ -121,7 +107,7 @@ public class WxPayService {
             Map<String, String> returnMap = new HashMap<String, String>();
             if ("SUCCESS".equals(return_code)) {
                 //返回的预付单信息
-                returnMap.put("appId", ConstantUtils.SCHOOL_APPID);
+                returnMap.put("appId", orderBean.getAppid());
                 returnMap.put("nonceStr", nonceStr);
                 String prepay_id = (String) map.get("prepay_id");
                 returnMap.put("package", "prepay_id=" + prepay_id);
@@ -131,7 +117,7 @@ public class WxPayService {
                 //                returnMap.put("orderid",orderid);
                 //拼接签名需要的参数
                 //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-                String paySign = PaymentKit.createSign(returnMap, ConstantUtils.WXPAY_PARTNERKEY).toUpperCase();
+                String paySign = PaymentKit.createSign(returnMap, orderBean.getPaySign()).toUpperCase();
                 returnMap.put("paySign", paySign);
                 aj.setObj(returnMap);
                 aj.setMsg("操作成功");
@@ -171,7 +157,12 @@ public class WxPayService {
     /*
     *  微信支付给我们后台的回调
     * */
-    public void wxPayCallBacknotify(HttpServletRequest request) {
+    public PayOrderBean wxPayCallBacknotify(HttpServletRequest request) {
+
+        if (orderBean == null) {
+            log.error("[微信支付创建订单] 支付回调失败");
+            throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+        }
 
         //获取所有的参数
         StringBuffer sbf = new StringBuffer();
@@ -198,23 +189,16 @@ public class WxPayService {
 
         log.error("校验通过.返回的参数={}", params);
         //校验返回来的支付结果,根据已经配置的密钥
-        if (PaymentKit.verifyNotify(params, ConstantUtils.WXPAY_PARTNERKEY)) {
+        if (PaymentKit.verifyNotify(params, orderBean.getPaySign())) {
             //Constants.SUCCESS="SUCCESS"
             if (("SUCCESS").equals(result_code)) {
                 //                    校验通过.更改订单状态为已支付, 修改库存
                 String orderid = params.get("out_trade_no");
-                RunSchoolOrder myOrder = service.findOne(orderid);
-                //这里因为微信支付成功后，会有多次回调，为了避免发送多条推送，这里做下过滤
-                if (!Objects.equals(myOrder.getPayStatus(), PayStatusEnum.SUCESS.getCode())) {
-                    myOrder.setPayStatus(PayStatusEnum.SUCESS.getCode());
-                    service.create(myOrder);
-                    log.error("[支付成功，修改支付状态]校验通过.更改订单状态为已支付, 修改库存");
-                    log.error("[推送服务]订单创建成功，推送服务");
-                    wxPushService.pushAll(myOrder);
-                }
-
+                orderBean.setOrderId(orderid);
+                return orderBean;
             }
         }
+        return null;
     }
 
 }

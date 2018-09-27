@@ -3,6 +3,7 @@ package com.qcl.utils;
 import com.qcl.huishou.bean.HuishouOrder;
 import com.qcl.paotui.bean.RunOrder;
 import com.qcl.paotuischool.bean.RunSchoolOrder;
+import com.qcl.wb_xiaoyuanbangpai.bean.BangPaiOrder;
 
 import java.util.List;
 
@@ -11,6 +12,17 @@ import java.util.List;
  * 保护用户隐私信息的工具类
  */
 public class ProtectUserUtils {
+
+    //校园帮派保护用户订单信息
+    public static List<BangPaiOrder> protectBangPaiOrders(List<BangPaiOrder> orders) {
+        orders.stream().forEach(runOrder -> {
+            runOrder.setName(protectUserName(runOrder.getName()));
+            runOrder.setPhone(protectUserPhone(runOrder.getPhone()));
+//            runOrder.setAddress(protectUserAddress(runOrder.getAddress()));
+            runOrder.setNoteContent("抢到单以后才能看");
+        });
+        return orders;
+    }
 
     //校园跑腿保护用户订单信息
     public static List<RunSchoolOrder> protectSchoolUserOrders(List<RunSchoolOrder> orders) {

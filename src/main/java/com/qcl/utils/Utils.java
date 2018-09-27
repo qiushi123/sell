@@ -3,6 +3,7 @@ package com.qcl.utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,8 @@ public class Utils {
 
     //strnig转集合
     public static List String2List(String jsonList) {
-        List<String> list =new Gson().fromJson(jsonList, new TypeToken<List<String>>() {}.getType
+        List<String> list = new Gson().fromJson(jsonList, new TypeToken<List<String>>() {
+        }.getType
                 ());
         return list;
     }
@@ -22,6 +24,20 @@ public class Utils {
     //集合转string
     public static String List2String(List list) {
         return new Gson().toJson(list);
+    }
+
+
+    /*
+    * 数组和集合之间相互转化
+    * */
+    public static String[] list2Array(List<String> list) {
+        String[] array = new String[list.size()];
+        array = list.toArray(array);
+        return array;
+    }
+
+    public static List<String> array2List(String[] strArray) {
+        return Arrays.asList(strArray);
     }
 
 
@@ -47,6 +63,7 @@ public class Utils {
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
     }
+
     //获取当前时间所在年份
     public static String getSysYear() {
         Calendar date = Calendar.getInstance();

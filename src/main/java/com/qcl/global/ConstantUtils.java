@@ -1,4 +1,4 @@
-package com.qcl.utils;
+package com.qcl.global;
 
 /**
  * Created by qcl on 2018/9/11.

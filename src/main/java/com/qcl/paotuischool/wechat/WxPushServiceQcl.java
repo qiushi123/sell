@@ -2,7 +2,7 @@ package com.qcl.paotuischool.wechat;
 
 import com.google.gson.Gson;
 import com.qcl.userwechat.bean.AccessToken;
-import com.qcl.utils.ConstantUtils;
+import com.qcl.global.ConstantUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
