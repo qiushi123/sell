@@ -80,6 +80,9 @@ public class BangPaiOrderController {
 
         BangPaiOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
         BangPaiOrder result = service.create(orderDTO);
+
+        // TODO: 2018/9/27 创建完订单时推送
+        wxPushService.pushAllRunner("wx3aaec846b7adfb6b");
         return ResultApiUtil.success(result);
     }
 
@@ -326,11 +329,14 @@ public class BangPaiOrderController {
     * 收集跑腿员的formid
     * */
 
-
     @PostMapping("/formid")
     public ResultApi formid(
             @RequestParam("openid") String openid,
-            @RequestParam("type") int type,
+            @RequestParam("appid") String appid,
+            @RequestParam("appsecret") String appsecret,
+            @RequestParam("mobanID") String mobanID,
+            @RequestParam("mobanBeiZhu") String mobanBeiZhu,
+            @RequestParam("type") int type,//跑腿员类型
             @RequestParam("formid") String formid) {
         if (StringUtils.isEmpty(openid) || StringUtils.isEmpty(formid)) {
             log.error("[查询订单列表] openid为空");
@@ -361,6 +367,10 @@ public class BangPaiOrderController {
             String[] array = new String[1];
             array[0] = formid;
             bean.setFormids(array);
+            bean.setAppid(appid);
+            bean.setAppsecret(appsecret);
+            bean.setMobanID(mobanID);
+            bean.setMobanBeiZhu(mobanBeiZhu);
             result = pushRepository.save(bean);
         }
 
