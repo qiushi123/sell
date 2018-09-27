@@ -48,7 +48,6 @@ public class BangPaiOrder {
     private Integer expressType;//物品类型，1小件，2中件，3大件，4寄快递
     private Float totalMoney;//总费用
 
-
     private boolean isJiaJi;//是否加急
     private boolean isShangLou;//是否送上楼
     private String yundanhao;//运单号
