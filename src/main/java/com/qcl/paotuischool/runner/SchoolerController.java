@@ -106,4 +106,65 @@ public class SchoolerController {
         return ResultApiUtil.success(bean1);
     }
 
+    /*
+    * 获取跑腿员列表
+    * runnerType：1待审核，其余都是已经审核过
+    * */
+    @PostMapping("/getRunnerList")
+    public ResultApi getRunnerList(
+            @RequestParam("openid") String openid,
+            @RequestParam("runnerType") int runnerType) {
+        if (StringUtils.isEmpty(openid)) {
+            log.error("[查询订单列表] openid为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        SchoolRunner runner = service.findOneOpenid(openid);
+        if (runner.getAdminType() != 66) {
+            log.error("[管理员获取信息] 不是管理员");
+            throw new SellException(ResultEnum.USER_ADMIN_NO);
+        }
+        List<SchoolRunner> allRunner = service.findAllRunner(runnerType);
+        return ResultApiUtil.success(allRunner);
+    }
+
+    /*
+    * 获取跑腿员列表
+    * runnerType：1待审核，其余都是已经审核过
+    * */
+    @PostMapping("/changeRunnerType")
+    public ResultApi changeRunnerType(
+            @RequestParam("adminOpenid") String adminOpenid,
+            @RequestParam("runnerOpenid") String runnerOpenid,
+            @RequestParam("runnerType") int runnerType) {
+        if (StringUtils.isEmpty(adminOpenid) || StringUtils.isEmpty(runnerOpenid)) {
+            log.error("[查询订单列表] openid为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        SchoolRunner runner = service.findOneOpenid(adminOpenid);
+        if (runner.getAdminType() != 66) {
+            log.error("[管理员获取信息] 不是管理员");
+            throw new SellException(ResultEnum.USER_ADMIN_NO);
+        }
+
+        SchoolRunner schoolRunner = service.findOneOpenid(runnerOpenid);
+        if (schoolRunner == null) {
+            log.error("[管理员获取信息] 不是管理员");
+            throw new SellException(ResultEnum.USER_NO_HAVE);
+        }
+        if (runnerType == -1) {//拒绝
+            schoolRunner.setType(-1);
+            schoolRunner.setRefuseDesc("您已被拒绝，请联系管理");
+        } else if (runnerType == 2) {
+            schoolRunner.setType(2);
+            schoolRunner.setRefuseDesc("可以代取快递");
+        } else if (runnerType == 3) {
+            schoolRunner.setType(3);
+            schoolRunner.setRefuseDesc("可以代取代寄快递");
+        }
+        SchoolRunner bean1 = service.save(schoolRunner);
+        return ResultApiUtil.success(bean1);
+    }
+
 }

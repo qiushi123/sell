@@ -81,7 +81,7 @@ public class BangPaiOrderController {
         BangPaiOrder orderDTO = RunOrderForm2DTOConverter.converter(orderForm);
         BangPaiOrder result = service.create(orderDTO);
 
-        //        wxPushService.pushAllRunner("wx3aaec846b7adfb6b");
+        //wxPushService.pushAllRunner("wx3aaec846b7adfb6b");
         return ResultApiUtil.success(result);
     }
 

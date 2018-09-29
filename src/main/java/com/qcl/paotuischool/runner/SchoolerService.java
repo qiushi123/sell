@@ -31,6 +31,25 @@ public class SchoolerService {
     }
 
     /**
+     * 查询跑腿员列表
+     */
+    public List<SchoolRunner> findAllRunner(int runnerType) {
+        //查询条件构造
+        Specification<SchoolRunner> spec = (Specification<SchoolRunner>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (runnerType == 1) {//待审核
+                list.add(cb.equal(root.get("type"), 1));
+            } else {//已审核
+                list.add(cb.notEqual(root.get("type"), 1));
+            }
+
+            Predicate[] p = new Predicate[list.size()];
+            return cb.and(list.toArray(p));
+        };
+        return repository.findAll(spec);
+    }
+
+    /**
      * 注册跑腿员
      *
      * @param user
