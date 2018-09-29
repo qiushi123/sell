@@ -24,17 +24,17 @@ public class BangPaiOrderForm {
     @Size(min = 11, max = 11, message = "手机号必须是11位")
     private String phone;
 
-    @NotEmpty(message = "送到哪儿不能为空")
+//    @NotEmpty(message = "送到哪儿不能为空")
     private String address;
     @NotEmpty(message = "请选择校区")
     private String school;
-    @NotEmpty(message = "去哪儿取和物品描述不能为空")
+    @NotEmpty(message = "您的需求不能为空")
     private String fromAddress;
-    @NotEmpty(message = "请复制取件短信")
+//    @NotEmpty(message = "请复制取件短信")
     private String noteContent;
-    @NotNull(message = "请选择物品重量")
+//    @NotNull(message = "请选择物品重量")
     private Integer expressType;
-    @NotNull(message = "代取费用不能为空")
+    @NotNull(message = "费用不能为空")
     private Float totalMoney;
 
     private int isJiaJi;//是否加急 1ture 0false
