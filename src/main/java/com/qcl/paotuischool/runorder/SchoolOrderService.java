@@ -106,4 +106,28 @@ public class SchoolOrderService {
         };
         return repository.findAll(spec, pageable);
     }
+
+    /**
+     * 管理员查看订单
+     * orderStatus;//订单状态 -1取消订单，0新下单待抢单，1已被抢单，2已取到，3已送达，4客户确认收货
+     * payStatus;//支付状态 -2已退款，-1已申请退款，0等待支付，1支付完成
+     *
+     * @param pageable
+     * @return
+     */
+    public Page<RunSchoolOrder> adminSeeOrders(int orderStatus, int payStatus, PageRequest pageable) {
+        //查询条件构造
+        Specification<RunSchoolOrder> spec = (Specification<RunSchoolOrder>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<Predicate>();
+            if (orderStatus != -100) {//orderStatus=-100时查询所有订单
+                list.add(cb.equal(root.get("orderStatus"), orderStatus));
+                list.add(cb.or(cb.equal(root.get("payStatus"), 1),
+                        cb.equal(root.get("payStatus"), -1)));
+            }
+
+            Predicate[] p = new Predicate[list.size()];
+            return cb.and(list.toArray(p));
+        };
+        return repository.findAll(spec, pageable);
+    }
 }

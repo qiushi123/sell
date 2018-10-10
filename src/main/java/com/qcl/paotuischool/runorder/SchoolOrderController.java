@@ -38,7 +38,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 跑腿
+ * 找我呀----跑腿
  */
 
 @RestController
@@ -267,9 +267,9 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.USER_NO_AUTHORITY);
         }
 
-        log.error("[填写运单号] yundanhao={}",yundanhao);
+        log.error("[填写运单号] yundanhao={}", yundanhao);
         //寄件单，跑腿员确认发件时需要填写发件运单号
-        if (!StringUtils.isEmpty(yundanhao)&&orderStatus==3&&order.getOrderType()==1) {
+        if (!StringUtils.isEmpty(yundanhao) && orderStatus == 3 && order.getOrderType() == 1) {
             order.setYundanhao(yundanhao);
             log.error("[填写运单号] 不为空，并改下成功运单号");
         }
@@ -322,6 +322,90 @@ public class SchoolOrderController {
             throw new SellException(ResultEnum.USER_NO_AUTHORITY);
         }
 
+        RunSchoolOrder runSchoolOrder = service.create(order);
+        return ResultApiUtil.success(runSchoolOrder);
+
+    }
+
+
+    //=======================下面是管理员管理订单相关=======================
+
+    /**
+     * 管理员查看订单
+     */
+    @PostMapping("/adminSeeOrders")
+    public ResultApi adminSeeOrders(
+            @RequestParam("adminOpenid") String adminOpenid,
+            @RequestParam(value = "orderStatus", defaultValue = "0") Integer orderStatus,
+            @RequestParam(value = "payStatus", defaultValue = "0") Integer payStatus,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "1000") int size) {
+        if (StringUtils.isEmpty(adminOpenid)) {
+            log.error("[查询订单列表] 跑腿员openid为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+        //只有管理员才能查看和管理订单
+        SchoolRunner schoolRunner = schoolerService.findOneOpenid(adminOpenid);
+        if (schoolRunner == null || schoolRunner.getAdminType() != 66) {
+            log.error("[查询可抢订单列表] 跑腿员没有审核通过");
+            throw new SellException(ResultEnum.USER_NO_AUTHORITY);
+        }
+
+        //按订单创建时间到排序，新订单在最前面
+        List<Sort.Order> list = new ArrayList<>(1);
+        //        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC, "isJiaJi");
+        Sort.Order order2 = new Sort.Order(Sort.Direction.DESC, "updateTime");
+        //        list.add(order1);
+        list.add(order2);
+        Sort sort = new Sort(list);
+        PageRequest request = new PageRequest(page, size, sort);
+        //orderStatus;//订单状态 -1取消订单，0新下单待抢单，1已被抢单，2已取到，3已送达，4客户确认收货
+        //payStatus;//支付状态 -2已退款，-1已申请退款，0等待支付，1支付完成
+        Page<RunSchoolOrder> orderPage = service.adminSeeOrders(orderStatus, payStatus, request);
+        return ResultApiUtil.success(orderPage.getContent());
+    }
+
+    /*
+    * 管理员操作订单
+    * 目前只支持管理员退款操作
+    *
+    * */
+    @PostMapping("/adminChangeOrder")
+    public ResultApi adminChangeOrder(
+            @RequestParam("orderid") String orderid,
+            @RequestParam("adminOpenid") String adminOpenid,
+            @RequestParam("orderStatus") Integer orderStatus,
+            @RequestParam("payStatus") Integer payStatus) {
+        if (StringUtils.isEmpty(orderid)) {
+            log.error("[查询订单列表] 订单号不能为空");
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        if (StringUtils.isEmpty(adminOpenid)) {
+            log.error("[查询订单列表] openid不能为空");
+            throw new SellException(ResultEnum.USER_NO_LOGIN);
+        }
+        //只有管理员才能查看和管理订单
+        SchoolRunner schoolRunner = schoolerService.findOneOpenid(adminOpenid);
+        if (schoolRunner == null || schoolRunner.getAdminType() != 66) {
+            log.error("[查询可抢订单列表] 跑腿员没有审核通过");
+            throw new SellException(ResultEnum.USER_NO_AUTHORITY);
+        }
+
+        if (ObjectUtils.isEmpty(orderStatus) || ObjectUtils.isEmpty(payStatus)) {
+            log.error("[修改订单] 订单状态不能为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        RunSchoolOrder order = service.findOne(orderid);
+        if (order == null) {
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        //orderStatus;//订单状态 -1取消订单，0新下单待抢单，1已被抢单，2已取到，3已送达，4客户确认收货
+        //payStatus;//支付状态 -2已退款，-1已申请退款，0等待支付，1支付完成
+        if (payStatus == -2 && orderStatus == -1) {//目前只支持管理员退款操作
+            order.setOrderStatus(orderStatus);
+            order.setPayStatus(payStatus);
+        }
         RunSchoolOrder runSchoolOrder = service.create(order);
         return ResultApiUtil.success(runSchoolOrder);
 
