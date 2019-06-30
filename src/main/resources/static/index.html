@@ -17,29 +17,8 @@
     <!--    <meta http-equiv="refresh" content="0; url=http://30paotui.com:9000"/>-->
 </head>
 <body>
-<a href="http://www.30paotui.com:9000"> 欢迎访问编程小石头的博客</a>
-欢迎访问编程小石头的博客<span style="color: red;font-size: 5em" id="sp">3</span>秒后自动跳到首页
-<!--引入倒计时-->
-<script type="text/javascript">
-    var x = 3; //利用了全局变量来执行
-    var baseUrl;
-    baseUrl = "http://www.30paotui.com:9000";
-
-    window.onload = function () {
-        setInterval(goHome, 1000);//定时调用倒计时
-    };
-    var goHome = function goHome() {
-        x--;
-        if (x > 0) {
-            document.getElementById("sp").innerHTML = x;  //每次设置的x的值都不一样了。
-        } else {
-            location.href = baseUrl;
-        }
-    };
-
-    console.log("qqqq" + window.location.hostname);
-    console.log("qqqq" + baseUrl);
-
+<script>
+    window.location.href = 'http://www.30paotui.com:9000';
 </script>
 </body>
 </html>
